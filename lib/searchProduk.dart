@@ -1,11 +1,11 @@
 import 'package:asdamindo/helper/global.dart';
 import 'package:flutter/material.dart';
 
-class HomeWidget extends StatefulWidget {
-  const HomeWidget({super.key, required this.title});
+class SearchProduk extends StatefulWidget {
+  const SearchProduk({super.key, required this.title});
   final String title;
   @override
-  State<HomeWidget> createState() => _HomeWidgetState();
+  State<SearchProduk> createState() => _SearchProdukState();
 }
 
 var product = [
@@ -28,7 +28,7 @@ var product = [
   {"nama_produk": "Galon GE", "harga": "50.000"},
 ];
 
-class _HomeWidgetState extends State<HomeWidget> {
+class _SearchProdukState extends State<SearchProduk> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -40,6 +40,7 @@ class _HomeWidgetState extends State<HomeWidget> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                SizedBox(height: 20),
                 Container(
                   width: global.getWidth(context),
                   padding: EdgeInsets.all(22),
@@ -53,43 +54,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                     ],
                   ),
                 ),
-                GridView.count(
-                  crossAxisCount: 2,
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: product.map((element) {
-                    return Container(
-                      margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.all(10),
-                      decoration: global.decCont(defWhite, 10, 10, 10, 10),
-                      child: Column(
-                        children: [
-                          Spacer(),
-                          Image.asset('assets/images/clock.png'),
-                          Spacer(),
-                          Text(
-                            element["nama_produk"]!,
-                            style: global.styleText5(14, Colors.black),
-                            textAlign: TextAlign.start,
-                          ),
-                          Spacer(),
-                          Row(
-                            children: [
-                              Text(
-                                "Rp. ${element["harga"]!}",
-                              ),
-                              Spacer(),
-                              Icon(
-                                Icons.shopping_bag_rounded,
-                                color: Colors.blueGrey,
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                ),
+                SizedBox(height: 200),
+                Text("Whoops, sayangnya barang yang anda cari tidak ditemukan ....")
               ],
             ),
           ),

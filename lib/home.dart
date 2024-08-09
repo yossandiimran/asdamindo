@@ -1,4 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
+import 'package:asdamindo/homeWidget.dart';
+import 'package:asdamindo/keranjang.dart';
 import 'package:asdamindo/profileWidget.dart';
+import 'package:asdamindo/searchProduk.dart';
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import 'package:flutter/material.dart';
@@ -38,35 +43,40 @@ class _HomePageState extends State<HomePage> {
   Color bgColor = Color.fromRGBO(143, 148, 251, 1);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(widget.title),
-      ),
-      body: getIndex(),
-      bottomNavigationBar: BottomBarInspiredInside(
-        items: items,
-        backgroundColor: bgColor,
-        color: Colors.white,
-        colorSelected: Colors.white,
-        indexSelected: visit,
-        onTap: (int index) => setState(() {
-          visit = index;
-        }),
-        animated: false,
-        chipStyle: const ChipStyle(isHexagon: false, convexBridge: true),
-        itemStyle: ItemStyle.hexagon,
+    return WillPopScope(
+      onWillPop: () async {
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Text(widget.title),
+        ),
+        body: getIndex(),
+        bottomNavigationBar: BottomBarInspiredInside(
+          items: items,
+          backgroundColor: bgColor,
+          color: Colors.white,
+          colorSelected: Colors.white,
+          indexSelected: visit,
+          onTap: (int index) => setState(() {
+            visit = index;
+          }),
+          animated: false,
+          chipStyle: const ChipStyle(isHexagon: false, convexBridge: true),
+          itemStyle: ItemStyle.hexagon,
+        ),
       ),
     );
   }
 
   getIndex() {
     if (visit == 0) {
-      return Container();
+      return HomeWidget(title: '');
     } else if (visit == 1) {
-      return Container(child: Text("ASDF2"));
+      return SearchProduk(title: '');
     } else if (visit == 2) {
-      return Container(child: Text("ASDF3"));
+      return Keranjang();
     } else if (visit == 3) {
       return ProfileWidget(title: '');
     }
