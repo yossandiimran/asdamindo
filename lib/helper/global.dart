@@ -1,8 +1,12 @@
-// ignore_for_file: file_names, prefer_const_constructors, prefer_interpolation_to_compose_strings, use_build_context_synchronously
+// ignore_for_file: file_names, prefer_const_constructors, prefer_interpolation_to_compose_strings, use_build_context_synchronously, deprecated_member_use
 import 'dart:convert';
 import 'dart:io';
+import 'package:asdamindo/helper/preference.dart';
 import 'package:flutter/material.dart';
+import 'package:pocketbase/pocketbase.dart';
 
+final pb = PocketBase('http://203.175.10.169:9090');
+Preference preference = Preference();
 Global global = Global();
 var selectIndexNow = 0, appVersion = '2.6.0';
 Codec<String, String> stringToBase64 = utf8.fuse(base64);
@@ -247,7 +251,11 @@ class Global {
                   children: [
                     Spacer(),
                     GestureDetector(
-                      onTap: () async {},
+                      onTap: () async {
+                        preference.clearPreference();
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
                       child: Container(
                         decoration: decCont2(defaultRed, 10, 10, 10, 10),
                         padding: EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),

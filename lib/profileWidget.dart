@@ -1,3 +1,9 @@
+// ignore_for_file: no_logic_in_create_state, prefer_typing_uninitialized_variables
+
+import 'package:asdamindo/formTambahBarang.dart';
+import 'package:asdamindo/helper/global.dart';
+import 'package:asdamindo/listBatangPribadi.dart';
+import 'package:asdamindo/profilePengaturan.dart';
 import 'package:flutter/material.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -38,7 +44,7 @@ class UserCard extends StatelessWidget {
           .padding(right: 10),
       <Widget>[
         Text(
-          'Depot Air Minum Cibereum',
+          preference.getData("nama"),
           style: TextStyle(
             color: Colors.white,
             fontSize: 18,
@@ -46,7 +52,7 @@ class UserCard extends StatelessWidget {
           ),
         ).padding(bottom: 5),
         Text(
-          'SK - 01283889ACJK9',
+          preference.getData("sk"),
           style: TextStyle(
             color: Colors.white.withOpacity(0.6),
             fontSize: 12,
@@ -62,9 +68,7 @@ class UserCard extends StatelessWidget {
       _buildUserStatsItem('51', 'Transaksi'),
       _buildUserStatsItem('21', 'Followers'),
       _buildUserStatsItem('33', 'Following'),
-    ]
-        .toRow(mainAxisAlignment: MainAxisAlignment.spaceAround)
-        .padding(vertical: 10);
+    ].toRow(mainAxisAlignment: MainAxisAlignment.spaceAround).padding(vertical: 10);
   }
 
   Widget _buildUserStatsItem(String value, String text) => <Widget>[
@@ -77,8 +81,7 @@ class UserCard extends StatelessWidget {
     return <Widget>[_buildUserRow(), _buildUserStats()]
         .toColumn(mainAxisAlignment: MainAxisAlignment.spaceAround)
         .padding(horizontal: 20, vertical: 10)
-        .decorated(
-            color: Color(0xff3977ff), borderRadius: BorderRadius.circular(20))
+        .decorated(color: Color(0xff3977ff), borderRadius: BorderRadius.circular(20))
         .elevation(
           5,
           shadowColor: Color(0xff3977ff),
@@ -129,32 +132,44 @@ class SettingsItemModel {
   final Color color;
   final String title;
   final String description;
+  final onTapEvent;
   const SettingsItemModel({
     required this.color,
     required this.description,
     required this.icon,
     required this.title,
+    required this.onTapEvent,
   });
 }
 
 const List<SettingsItemModel> settingsItems = [
   SettingsItemModel(
-    icon: Icons.settings,
-    color: Color(0xff8D7AEE),
-    title: 'Pengaturan',
-    description: 'Ubah pengaturan alamat, profile, dll',
-  ),
-  SettingsItemModel(
     icon: Icons.dashboard,
     color: Color(0xffF468B7),
     title: 'Produk',
     description: 'Daftar Produk Anda',
+    onTapEvent: "Produk",
+  ),
+  SettingsItemModel(
+    icon: Icons.settings,
+    color: Color(0xff8D7AEE),
+    title: 'Pengaturan',
+    description: 'Ubah pengaturan alamat, profile, dll',
+    onTapEvent: "Pengaturan",
+  ),
+  SettingsItemModel(
+    icon: Icons.logout_rounded,
+    color: Color.fromARGB(255, 228, 43, 22),
+    title: 'Logout',
+    description: 'Keluar dari akun anda',
+    onTapEvent: "Logout",
   ),
   SettingsItemModel(
     icon: Icons.question_answer,
     color: Color(0xffBFACAA),
     title: 'Support',
     description: 'Hubungi admin asdamindo',
+    onTapEvent: "Support",
   ),
 ];
 
@@ -168,26 +183,30 @@ class Settings extends StatelessWidget {
             settingsItem.color,
             settingsItem.title,
             settingsItem.description,
+            settingsItem.onTapEvent,
           ))
       .toList()
       .toColumn();
 }
 
 class SettingsItem extends StatefulWidget {
-  SettingsItem(this.icon, this.iconBgColor, this.title, this.description,
-      {super.key});
+  SettingsItem(this.icon, this.iconBgColor, this.title, this.description, this.onTapEvent, {super.key});
 
   final IconData icon;
   final Color iconBgColor;
   final String title;
   final String description;
+  final onTapEvent;
 
   @override
-  _SettingsItemState createState() => _SettingsItemState();
+  _SettingsItemState createState() => _SettingsItemState(onTapEvent);
 }
 
 class _SettingsItemState extends State<SettingsItem> {
   bool pressed = false;
+  final onTapEvent;
+
+  _SettingsItemState(this.onTapEvent);
 
   @override
   Widget build(BuildContext context) {
@@ -206,10 +225,27 @@ class _SettingsItemState extends State<SettingsItem> {
         .constrained(height: 80)
         .padding(vertical: 12) // margin
         .gestures(
-          onTapChange: (tapStatus) => setState(() => pressed = tapStatus),
-          onTapDown: (details) => print('tapDown'),
-          onTap: () => print('onTap'),
-        )
+            onTapChange: (tapStatus) => setState(() => pressed = tapStatus),
+            onTapDown: (details) => print('tapDown'),
+            onTap: () {
+              if (onTapEvent == "Logout") global.alertLogout(context);
+              if (onTapEvent == "Produk") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (ctx) {
+                    return ProductListScreen();
+                  }),
+                );
+              }
+              if (onTapEvent == "Pengaturan") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (ctx) {
+                    return PengaturanProfile(title: 'Pengaturan');
+                  }),
+                );
+              }
+            })
         .animate(Duration(milliseconds: 150), Curves.easeOut);
 
     final Widget icon = Icon(widget.icon, size: 20, color: Colors.white)

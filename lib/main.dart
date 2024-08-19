@@ -1,7 +1,9 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:asdamindo/helper/global.dart';
 import 'package:asdamindo/home.dart';
 import 'package:asdamindo/registrasi.dart';
 import 'package:flutter/material.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,6 +33,26 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  @override
+  void initState() {
+    checkInit();
+    super.initState();
+  }
+
+  checkInit() async {
+    await preference.initialization();
+    if (preference.getData("token") != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (ctx) {
+          return HomePage(title: "Asdamindo");
+        }),
+      );
+    }
+  }
+
+  TextEditingController user = TextEditingController(text: "yossandiimran3");
+  TextEditingController pass = TextEditingController(text: "admin123");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,6 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ),
                             child: TextField(
+                              controller: user,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Email or Phone number",
@@ -160,6 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           Container(
                             padding: EdgeInsets.all(8.0),
                             child: TextField(
+                              controller: pass,
                               obscureText: true,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -181,12 +205,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     duration: Duration(milliseconds: 1900),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (ctx) {
-                            return HomePage(title: "Asdamindo");
-                          }),
-                        );
+                        prosesLogin();
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (ctx) {
+                        //     return HomePage(title: "Asdamindo");
+                        //   }),
+                        // );
                       },
                       child: Container(
                         height: 50,
@@ -261,5 +286,44 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+  }
+
+  Future<void> prosesLogin() async {
+    global.loadingAlert(context, "Mohon tunggu...", true);
+    await pb.collection('users').authWithPassword(user.text, pass.text).then((value) async {
+      var vals = value.toJson();
+      await preference.setString("token", vals["token"]);
+      for (var key in vals["record"].keys) {
+        await preference.setString(key, vals["record"][key].toString());
+      }
+      Navigator.pop(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (ctx) {
+          return HomePage(title: "Asdamindo");
+        }),
+      );
+      global.alertSuccess(context, "Berhasil Login");
+    }).catchError((err) {
+      print(err);
+      try {
+        ClientException error = err;
+        print(error);
+        Navigator.pop(context);
+        var dynamicData = error.response["data"];
+        for (var key in dynamicData.keys) {
+          var valueList = dynamicData[key]!;
+          return global.alertWarning(context, valueList["message"].toString());
+        }
+        return global.alertWarning(context, "Username / Email & Password salah");
+      } catch (err2) {
+        Navigator.pop(context);
+        print(err2);
+      }
+    });
+
+    // print(pb.authStore.isValid);
+    // print(pb.authStore.token);
+    // print(pb.authStore.model.id);
   }
 }

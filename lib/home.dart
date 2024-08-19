@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:asdamindo/helper/global.dart';
 import 'package:asdamindo/homeWidget.dart';
 import 'package:asdamindo/keranjang.dart';
 import 'package:asdamindo/profileWidget.dart';
@@ -45,7 +46,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return true;
+        return global.alertConfirmExit(context);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
           }),
           animated: false,
           chipStyle: const ChipStyle(isHexagon: false, convexBridge: true),
-          itemStyle: ItemStyle.hexagon,
+          itemStyle: ItemStyle.circle,
         ),
       ),
     );

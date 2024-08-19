@@ -3,14 +3,14 @@ import 'package:asdamindo/helper/global.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-class RegistrasiPage extends StatefulWidget {
-  const RegistrasiPage({super.key, required this.title});
+class PengaturanProfile extends StatefulWidget {
+  const PengaturanProfile({super.key, required this.title});
   final String title;
   @override
-  State<RegistrasiPage> createState() => _RegistrasiPageState();
+  State<PengaturanProfile> createState() => _PengaturanProfileState();
 }
 
-class _RegistrasiPageState extends State<RegistrasiPage> {
+class _PengaturanProfileState extends State<PengaturanProfile> {
   TextEditingController email = TextEditingController(text: "");
   TextEditingController user = TextEditingController(text: "");
   TextEditingController pass = TextEditingController(text: "");
@@ -21,32 +21,46 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
   TextEditingController kota = TextEditingController(text: "");
   TextEditingController sk = TextEditingController(text: "");
   TextEditingController kodePos = TextEditingController(text: "");
+
+  @override
+  void initState() {
+    getInitDataPreference();
+    super.initState();
+  }
+
+  getInitDataPreference() async {
+    email.text = preference.getData("email");
+    user.text = preference.getData("username");
+    pass.text = preference.getData("pass") ?? "9999999";
+    nama.text = preference.getData("nama");
+    noHp.text = preference.getData("nomor_hp");
+    alamat.text = preference.getData("alamat");
+    npwp.text = preference.getData("npwp");
+    kota.text = preference.getData("kota");
+    sk.text = preference.getData("sk");
+    kodePos.text = preference.getData("kodePos");
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(title: Text("Profile")),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
             Container(
-              height: 200,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/background.png'),
-                  fit: BoxFit.cover,
-                ),
-              ),
               child: Stack(
                 children: <Widget>[
                   Positioned(
                     child: FadeInUp(
                       duration: Duration(milliseconds: 1600),
                       child: Container(
-                        margin: EdgeInsets.only(top: 50),
                         child: Center(
                           child: Text(
-                            "Registrasi Member",
+                            "Profile",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -271,7 +285,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                   FadeInUp(
                     duration: Duration(milliseconds: 1900),
                     child: GestureDetector(
-                      onTap: () => prosesRegistarsi(),
+                      onTap: () => prosesUbahData(),
                       child: Container(
                         height: 50,
                         decoration: BoxDecoration(
@@ -285,7 +299,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                         ),
                         child: Center(
                           child: Text(
-                            "Registrasi",
+                            "Ubah Data",
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -298,26 +312,6 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                   SizedBox(
                     height: 70,
                   ),
-                  Row(
-                    children: [
-                      FadeInUp(
-                        duration: Duration(milliseconds: 2000),
-                        child: GestureDetector(
-                          onTap: () async {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            "Sudah Punya Akun?",
-                            style: TextStyle(
-                              fontStyle: FontStyle.italic,
-                              color: Color.fromRGBO(143, 148, 251, 1),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Spacer(),
-                    ],
-                  ),
                 ],
               ),
             )
@@ -327,7 +321,7 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
     );
   }
 
-  Future<void> prosesRegistarsi() async {
+  Future<void> prosesUbahData() async {
     global.loadingAlert(context, "Mohon tunggu...", true);
     // example create body
     final body = <String, dynamic>{
