@@ -1,21 +1,9 @@
 import 'dart:io';
 
 import 'package:asdamindo/formTambahBarang.dart';
+import 'package:asdamindo/helper/global.dart';
 import 'package:flutter/material.dart';
-
-class Product {
-  final String name;
-  final double price;
-  final String description;
-  final File? image;
-
-  Product({
-    required this.name,
-    required this.price,
-    required this.description,
-    this.image,
-  });
-}
+import 'package:pocketbase/pocketbase.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
@@ -24,25 +12,46 @@ class ProductListScreen extends StatefulWidget {
 }
 
 class _ProductListScreenState extends State<ProductListScreen> {
-  final List<Product> _products = [];
+  List products = [];
 
-  void _addProduct(Product product) {
-    setState(() {
-      _products.add(product);
+  @override
+  void initState() {
+    getFullList();
+    super.initState();
+  }
+
+  Future<void> getFullList() async {
+    await pb.collection('produk').getFullList(filter: "id_user = '${preference.getData("id")}'").then((value) {
+      print(value);
+      products = value;
+      setState(() {});
+    }).catchError((err) {
+      try {
+        ClientException error = err;
+        print(error);
+        Navigator.pop(context);
+        var dynamicData = error.response["data"];
+        for (var key in dynamicData.keys) {
+          var valueList = dynamicData[key]!;
+          return global.alertWarning(context, valueList["message"].toString());
+        }
+        return global.alertWarning(context, "Data kosong !");
+      } catch (err2) {
+        Navigator.pop(context);
+        print(err2);
+      }
     });
   }
 
   void _navigateToAddProductScreen() async {
-    final newProduct = await Navigator.push(
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => ProductForm(),
       ),
-    );
-
-    if (newProduct != null) {
-      _addProduct(newProduct as Product);
-    }
+    ).then((value) {
+      setState(() {});
+    });
   }
 
   @override
@@ -58,23 +67,24 @@ class _ProductListScreenState extends State<ProductListScreen> {
         ],
       ),
       body: ListView.builder(
-        itemCount: _products.length,
+        itemCount: products.length,
         itemBuilder: (context, index) {
-          final product = _products[index];
+          final product = products[index];
+          print(product.nama_produk);
           return ListTile(
-            leading: product.image != null
-                ? Image.file(
-                    product.image!,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                  )
-                : Icon(Icons.image, size: 50),
-            title: Text(product.name),
-            subtitle: Text(
-              '${product.price.toStringAsFixed(2)} - ${product.description}',
-            ),
-          );
+              // leading: product.foto_produk != []
+              //     ? Image.file(
+              //         product.foto_produk[0],
+              //         width: 50,
+              //         height: 50,
+              //         fit: BoxFit.cover,
+              //       )
+              //     : Icon(Icons.image, size: 50),
+              // title: Text(product.nama_produk),
+              // subtitle: Text(
+              //   '${product.harga.toStringAsFixed(2)} - ${product.keterangan}',
+              // ),
+              );
         },
       ),
     );
