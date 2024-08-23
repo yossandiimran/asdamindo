@@ -44,7 +44,7 @@ class Global {
   //BASE IP PUBLIC DEFAULT PRD
   // var baseIp = '192.168.1.128';
   //BASE IP PUBLIC DEFAULT DEV
-  var baseIp = '210.210.165.197';
+  var baseIp = 'http://203.175.10.169:9090';
 
   defaulterrorResponsePop(context, message) => alertWarning(context, message);
 
@@ -439,5 +439,22 @@ class Global {
       labelStyle: TextStyle(color: defaultBlue),
       enabledBorder: UnderlineInputBorder(borderSide: BorderSide.none),
     );
+  }
+
+  String formatRupiah(double amount) {
+    // Konversi angka ke string dan pecah menjadi bagian ribuan
+    String amountString = amount.toStringAsFixed(0); // Menghilangkan desimal
+    List<String> parts = [];
+
+    for (int i = amountString.length; i > 0; i -= 3) {
+      int start = (i - 3 < 0) ? 0 : i - 3;
+      parts.insert(0, amountString.substring(start, i));
+    }
+
+    // Gabungkan dengan tanda titik sebagai pemisah ribuan
+    String formatted = parts.join('.');
+
+    // Tambahkan simbol Rp di depan
+    return 'Rp $formatted';
   }
 }

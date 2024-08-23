@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:asdamindo/formTambahBarang.dart';
 import 'package:asdamindo/helper/global.dart';
@@ -22,8 +22,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   Future<void> getFullList() async {
     await pb.collection('produk').getFullList(filter: "id_user = '${preference.getData("id")}'").then((value) {
-      print(value);
-      products = value;
+      products = jsonDecode(value.toString());
       setState(() {});
     }).catchError((err) {
       try {
@@ -58,35 +57,46 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Daftar Produk Anda'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: _navigateToAddProductScreen,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20.0),
           ),
-        ],
+        ),
+        automaticallyImplyLeading: false,
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: defWhite)),
+        title: Text('Daftar Produk Anda', style: global.styleText5(global.getWidth(context) / 18, defWhite)),
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(143, 148, 251, 1),
       ),
-      body: ListView.builder(
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          final product = products[index];
-          print(product.nama_produk);
-          return ListTile(
-              // leading: product.foto_produk != []
-              //     ? Image.file(
-              //         product.foto_produk[0],
-              //         width: 50,
-              //         height: 50,
-              //         fit: BoxFit.cover,
-              //       )
-              //     : Icon(Icons.image, size: 50),
-              // title: Text(product.nama_produk),
-              // subtitle: Text(
-              //   '${product.harga.toStringAsFixed(2)} - ${product.keterangan}',
-              // ),
-              );
-        },
+      body: ListView(
+        children: [SizedBox(height: 10), for (var i = 0; i < products.length; i++) getChildList(products[i])],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _navigateToAddProductScreen,
+        child: Icon(Icons.add_circle_outline_rounded, color: defWhite),
       ),
     );
+  }
+
+  Widget getChildList(product) {
+    Widget widget = Container(
+      decoration: global.decCont2(defWhite, 10, 10, 10, 10),
+      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      child: ListTile(
+        leading: product["foto_produk"] != []
+            ? Image.network(
+                "${global.baseIp}/api/files/${product["collectionId"]}/${product["id"]}/${product["foto_produk"][0]}",
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              )
+            : Icon(Icons.image, size: 50),
+        title: Text(product["nama_produk"]),
+        subtitle: Text(
+          '${global.formatRupiah(double.parse(product["harga"]))} - ${product["keterangan"]}',
+        ),
+      ),
+    );
+    return widget;
   }
 }

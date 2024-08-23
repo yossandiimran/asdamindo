@@ -45,14 +45,14 @@ class _MyHomePageState extends State<MyHomePage> {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (ctx) {
-          return HomePage(title: "Asdamindo");
+          return HomePage(title: "Asdamindo E-Commerce");
         }),
       );
     }
   }
 
-  TextEditingController user = TextEditingController(text: "yossandiimran3");
-  TextEditingController pass = TextEditingController(text: "admin123");
+  TextEditingController user = TextEditingController(text: "");
+  TextEditingController pass = TextEditingController(text: "");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,7 +124,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         margin: EdgeInsets.only(top: 50),
                         child: Center(
                           child: Text(
-                            "Asdamindo",
+                            "Asdamindo\nE-Commerce",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 40,
@@ -175,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               controller: user,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                hintText: "Email or Phone number",
+                                hintText: "Username / Email",
                                 hintStyle: TextStyle(color: Colors.grey[700]),
                               ),
                             ),
@@ -300,7 +301,7 @@ class _MyHomePageState extends State<MyHomePage> {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (ctx) {
-          return HomePage(title: "Asdamindo");
+          return HomePage(title: "Asdamindo E-Commerce");
         }),
       );
       global.alertSuccess(context, "Berhasil Login");
@@ -310,12 +311,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ClientException error = err;
         print(error);
         Navigator.pop(context);
-        var dynamicData = error.response["data"];
-        for (var key in dynamicData.keys) {
-          var valueList = dynamicData[key]!;
-          return global.alertWarning(context, valueList["message"].toString());
-        }
-        return global.alertWarning(context, "Username / Email & Password salah");
+        // var dynamicData = error.response["data"];
+        // for (var key in dynamicData.keys) {
+        //   var valueList = dynamicData[key]!;
+        //   global.alertWarning(context, valueList["message"].toString());
+        // }
+        global.alertWarning(context, "Username / Email & Password salah");
       } catch (err2) {
         Navigator.pop(context);
         print(err2);

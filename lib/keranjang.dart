@@ -10,12 +10,7 @@ class Keranjang extends StatefulWidget {
 }
 
 class KeranjangState extends State<Keranjang> {
-  static const List listCart = [
-    {"nama_produk": "Galon A", "qty": "2", "harga_jual": "20.000"},
-    {"nama_produk": "Galon B", "qty": "5", "harga_jual": "20.000"},
-    {"nama_produk": "Galon C", "qty": "1", "harga_jual": "13.000"},
-    {"nama_produk": "Galon D", "qty": "1", "harga_jual": "4.000"},
-  ];
+  static const List listCart = [];
   bool isLoading = true;
   num grandTotal = 0;
   TextEditingController ketController = TextEditingController(text: "");
@@ -116,7 +111,7 @@ class KeranjangState extends State<Keranjang> {
                           children: [
                             Spacer(),
                             Text(
-                              "40.000",
+                              "0",
                               style: global.styleText5(14, defBlack1),
                             ),
                           ],

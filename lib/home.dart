@@ -50,8 +50,15 @@ class _HomePageState extends State<HomePage> {
       },
       child: Scaffold(
         appBar: AppBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(20.0),
+            ),
+          ),
           automaticallyImplyLeading: false,
-          title: Text(widget.title),
+          backgroundColor: bgColor,
+          centerTitle: true,
+          title: Text(widget.title, style: global.styleText5(global.getWidth(context) / 15, defWhite)),
         ),
         body: getIndex(),
         bottomNavigationBar: BottomBarInspiredInside(

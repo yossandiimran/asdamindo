@@ -1,6 +1,5 @@
 // ignore_for_file: no_logic_in_create_state, prefer_typing_uninitialized_variables
 
-import 'package:asdamindo/formTambahBarang.dart';
 import 'package:asdamindo/helper/global.dart';
 import 'package:asdamindo/listBatangPribadi.dart';
 import 'package:asdamindo/profilePengaturan.dart';
@@ -164,13 +163,13 @@ const List<SettingsItemModel> settingsItems = [
     description: 'Keluar dari akun anda',
     onTapEvent: "Logout",
   ),
-  SettingsItemModel(
-    icon: Icons.question_answer,
-    color: Color(0xffBFACAA),
-    title: 'Support',
-    description: 'Hubungi admin asdamindo',
-    onTapEvent: "Support",
-  ),
+  // SettingsItemModel(
+  //   icon: Icons.question_answer,
+  //   color: Color(0xffBFACAA),
+  //   title: 'Support',
+  //   description: 'Hubungi admin asdamindo',
+  //   onTapEvent: "Support",
+  // ),
 ];
 
 class Settings extends StatelessWidget {
