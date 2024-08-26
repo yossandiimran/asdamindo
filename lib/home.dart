@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
           automaticallyImplyLeading: false,
           backgroundColor: bgColor,
           centerTitle: true,
-          title: Text(widget.title, style: global.styleText5(global.getWidth(context) / 15, defWhite)),
+          title: Text(widget.title, style: global.styleText5(global.getWidth(context) / 20, defWhite)),
         ),
         body: getIndex(),
         bottomNavigationBar: BottomBarInspiredInside(

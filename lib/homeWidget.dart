@@ -54,19 +54,19 @@ class _HomeWidgetState extends State<HomeWidget> {
             child: Column(
               children: [
                 SizedBox(height: 10),
-                Container(
-                  width: global.getWidth(context),
-                  padding: EdgeInsets.all(20),
-                  margin: EdgeInsets.symmetric(horizontal: 8),
-                  decoration: global.decCont(defWhite, 20, 20, 20, 20),
-                  child: Row(
-                    children: [
-                      Text("Cari Produk..."),
-                      Spacer(),
-                      Icon(Icons.search_rounded),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   width: global.getWidth(context),
+                //   padding: EdgeInsets.all(20),
+                //   margin: EdgeInsets.symmetric(horizontal: 8),
+                //   decoration: global.decCont(defWhite, 20, 20, 20, 20),
+                //   child: Row(
+                //     children: [
+                //       Text("Cari Produk..."),
+                //       Spacer(),
+                //       Icon(Icons.search_rounded),
+                //     ],
+                //   ),
+                // ),
                 GridView.count(
                   crossAxisCount: 2,
                   shrinkWrap: true,
@@ -74,19 +74,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                   children: products.map((element) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
                           return DetailBarang(obj: element);
                         }));
                       },
                       child: Container(
                         margin: EdgeInsets.all(10),
-                        decoration: global.decCont(
-                            Color.fromRGBO(143, 148, 251, 1).withOpacity(0.2),
-                            10,
-                            10,
-                            10,
-                            10),
+                        decoration: global.decCont(Color.fromRGBO(143, 148, 251, 1).withOpacity(0.2), 10, 10, 10, 10),
                         child: Stack(
                           children: [
                             element["foto_produk"] != []
@@ -103,32 +97,22 @@ class _HomeWidgetState extends State<HomeWidget> {
                                   Spacer(),
                                   Container(
                                     padding: EdgeInsets.all(5),
-                                    decoration: global.decCont(
-                                        Color.fromRGBO(143, 148, 251, 1)
-                                            .withOpacity(0.8),
-                                        10,
-                                        10,
-                                        0,
-                                        0),
+                                    decoration:
+                                        global.decCont(Color.fromRGBO(143, 148, 251, 1).withOpacity(0.8), 10, 10, 0, 0),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
                                           element["nama_produk"]!,
-                                          style: global.styleText5(
-                                              12, Colors.white),
+                                          style: global.styleText5(12, Colors.white),
                                           textAlign: TextAlign.start,
                                         ),
                                         Row(
                                           children: [
                                             Text(
-                                              global.formatRupiah(double.parse(
-                                                  element["harga"]!)),
-                                              style: global.styleText6(
-                                                  11, Colors.white),
+                                              global.formatRupiah(double.parse(element["harga"]!)),
+                                              style: global.styleText6(11, Colors.white),
                                             ),
                                             Spacer(),
                                             Icon(

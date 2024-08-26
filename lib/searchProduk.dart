@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:asdamindo/detailProduk.dart';
 import 'package:asdamindo/helper/global.dart';
 import 'package:flutter/material.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class SearchProduk extends StatefulWidget {
   const SearchProduk({super.key, required this.title});
@@ -8,27 +12,35 @@ class SearchProduk extends StatefulWidget {
   State<SearchProduk> createState() => _SearchProdukState();
 }
 
-var product = [
-  {"nama_produk": "Galon A", "harga": "20.000"},
-  {"nama_produk": "Galon B", "harga": "20.000"},
-  {"nama_produk": "Galon C", "harga": "13.000"},
-  {"nama_produk": "Galon D", "harga": "4.000"},
-  {"nama_produk": "Galon E", "harga": "5.000"},
-  {"nama_produk": "Galon F", "harga": "7.000"},
-  {"nama_produk": "Galon G", "harga": "14.000"},
-  {"nama_produk": "Galon H", "harga": "32.000"},
-  {"nama_produk": "Galon I", "harga": "44.000"},
-  {"nama_produk": "Galon J", "harga": "50.000"},
-  {"nama_produk": "Galon GG", "harga": "50.000"},
-  {"nama_produk": "Galon DD", "harga": "50.000"},
-  {"nama_produk": "Galon FG", "harga": "50.000"},
-  {"nama_produk": "Galon AS", "harga": "50.000"},
-  {"nama_produk": "Galon FF", "harga": "50.000"},
-  {"nama_produk": "Galon HE", "harga": "50.000"},
-  {"nama_produk": "Galon GE", "harga": "50.000"},
-];
-
 class _SearchProdukState extends State<SearchProduk> {
+  TextEditingController searchKey = TextEditingController();
+  var products = [];
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  getListProduct() async {
+    await pb.collection('produk').getFullList(filter: 'nama_produk ~ "${searchKey.text}"').then((value) {
+      products = jsonDecode(value.toString());
+      setState(() {});
+      print(products);
+    }).catchError((err) {
+      try {
+        ClientException error = err;
+        print(error);
+        var dynamicData = error.response["data"];
+        for (var key in dynamicData.keys) {
+          var valueList = dynamicData[key]!;
+          return global.alertWarning(context, valueList["message"].toString());
+        }
+        return global.alertWarning(context, "Data kosong !");
+      } catch (err2) {
+        print(err2);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -40,22 +52,91 @@ class _SearchProdukState extends State<SearchProduk> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 Container(
                   width: global.getWidth(context),
-                  padding: EdgeInsets.all(22),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   margin: EdgeInsets.symmetric(horizontal: 20),
                   decoration: global.decCont(defWhite, 20, 20, 20, 20),
-                  child: Row(
-                    children: [
-                      Text("Cari Produk..."),
-                      Spacer(),
-                      Icon(Icons.search_rounded),
-                    ],
+                  child: TextField(
+                    controller: searchKey,
+                    onChanged: (val) {
+                      getListProduct();
+                    },
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      suffixIcon: Icon(Icons.search, color: defBlack1),
+                      hintText: 'Cari Produk',
+                    ),
                   ),
                 ),
-                SizedBox(height: 200),
-                Text("Whoops, sayangnya barang yang anda cari tidak ditemukan ....")
+                // ),
+                GridView.count(
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: products.map((element) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return DetailBarang(obj: element);
+                        }));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(10),
+                        decoration: global.decCont(Color.fromRGBO(143, 148, 251, 1).withOpacity(0.2), 10, 10, 10, 10),
+                        child: Stack(
+                          children: [
+                            element["foto_produk"] != []
+                                ? Container(
+                                    padding: EdgeInsets.all(5),
+                                    child: Image.network(
+                                      "${global.baseIp}/api/files/${element["collectionId"]}/${element["id"]}/${element["foto_produk"][0]}",
+                                    ),
+                                  )
+                                : Icon(Icons.image, size: 50),
+                            Container(
+                              child: Column(
+                                children: [
+                                  Spacer(),
+                                  Container(
+                                    padding: EdgeInsets.all(5),
+                                    decoration:
+                                        global.decCont(Color.fromRGBO(143, 148, 251, 1).withOpacity(0.8), 10, 10, 0, 0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          element["nama_produk"]!,
+                                          style: global.styleText5(12, Colors.white),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              global.formatRupiah(double.parse(element["harga"]!)),
+                                              style: global.styleText6(11, Colors.white),
+                                            ),
+                                            Spacer(),
+                                            Icon(
+                                              Icons.shopping_bag_rounded,
+                                              color: defWhite,
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ],
             ),
           ),

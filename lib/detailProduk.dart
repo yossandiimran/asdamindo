@@ -84,8 +84,6 @@ class DetailBarangState extends State<DetailBarang> {
               Container(
                 height: global.getHeight(context),
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/bg2.png"), fit: BoxFit.cover),
                   color: defBlack2,
                   boxShadow: [
                     BoxShadow(
@@ -156,8 +154,7 @@ class DetailBarangState extends State<DetailBarang> {
                           style: global.styleText5(18, defBlack1),
                         ),
                         subtitle: Text(
-                          global
-                              .formatRupiah(double.parse(widget.obj["harga"])),
+                          global.formatRupiah(double.parse(widget.obj["harga"])),
                           style: global.styleText5(14, defGrey),
                         ),
                       ),
@@ -175,14 +172,12 @@ class DetailBarangState extends State<DetailBarang> {
                               },
                               child: Container(
                                 padding: EdgeInsets.all(5),
-                                decoration:
-                                    global.decCont(defWhite, 10, 10, 10, 10),
+                                decoration: global.decCont(defWhite, 10, 10, 10, 10),
                                 child: Icon(Icons.remove, color: defRed),
                               ),
                             ),
                             SizedBox(width: 10),
-                            Text(cntCart.toString(),
-                                style: global.styleText5(20, defBlack1)),
+                            Text(cntCart.toString(), style: global.styleText5(20, defBlack1)),
                             SizedBox(width: 10),
                             GestureDetector(
                               onTap: () {
@@ -191,8 +186,7 @@ class DetailBarangState extends State<DetailBarang> {
                               },
                               child: Container(
                                 padding: EdgeInsets.all(5),
-                                decoration:
-                                    global.decCont(defWhite, 10, 10, 10, 10),
+                                decoration: global.decCont(defWhite, 10, 10, 10, 10),
                                 child: Icon(Icons.add_rounded, color: defBlue),
                               ),
                             ),
@@ -201,15 +195,11 @@ class DetailBarangState extends State<DetailBarang> {
                               onTap: addToCart,
                               child: Container(
                                 padding: EdgeInsets.all(5),
-                                decoration:
-                                    global.decCont(defWhite, 10, 10, 10, 10),
+                                decoration: global.decCont(defWhite, 10, 10, 10, 10),
                                 child: Row(
                                   children: [
-                                    Icon(Icons.add_shopping_cart_rounded,
-                                        color: defOrange),
-                                    Text("Tambah ke keranjang",
-                                        style:
-                                            global.styleText5(12, defOrange)),
+                                    Icon(Icons.add_shopping_cart_rounded, color: defOrange),
+                                    Text("Tambah ke keranjang", style: global.styleText5(12, defOrange)),
                                   ],
                                 ),
                               ),
@@ -221,7 +211,6 @@ class DetailBarangState extends State<DetailBarang> {
                       SizedBox(height: 10),
                       ListTile(
                         visualDensity: VisualDensity(vertical: -4),
-                        title: Text("id Barang"),
                         subtitle: Text(widget.obj["nama_produk"]),
                       ),
                       ListTile(
@@ -229,9 +218,7 @@ class DetailBarangState extends State<DetailBarang> {
                         subtitle: Text("${widget.obj["keterangan"]}"),
                       ),
                       SizedBox(height: 10),
-                      SizedBox(
-                          height: global.getHeight(context) -
-                              (kToolbarHeight * 5.8)),
+                      SizedBox(height: global.getHeight(context) - (kToolbarHeight * 5.8)),
                     ],
                   ),
                 )
@@ -267,8 +254,7 @@ class DetailBarangState extends State<DetailBarang> {
         tempCart["cart"].add(widget.obj);
       }
     }
-    preference.setString(
-        "cart", base64Encode(utf8.encode(jsonEncode(tempCart))));
+    preference.setString("cart", base64Encode(utf8.encode(jsonEncode(tempCart))));
     Navigator.pop(context);
     global.alertSuccess(context, "Berhasil $msg ke keranjang");
   }
