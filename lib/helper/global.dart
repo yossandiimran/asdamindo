@@ -13,8 +13,10 @@ Codec<String, String> stringToBase64 = utf8.fuse(base64);
 var now = DateTime.now();
 
 //Default Theme Color
-Color defaultBlue = const Color(0xff1572e8), defaultRed = const Color(0xffea4d56);
-Color defaultOrange = const Color(0xffff910a), defaultGreen = const Color(0xff2bb930);
+Color defaultBlue = const Color(0xff1572e8),
+    defaultRed = const Color(0xffea4d56);
+Color defaultOrange = const Color(0xffff910a),
+    defaultGreen = const Color(0xff2bb930);
 Color defWhite = Colors.white;
 Color defBlue = const Color(0xff1572e8), defRed = const Color(0xffea4d56);
 Color defOrange = const Color(0xffff910a), defGreen = const Color(0xff2bb930);
@@ -24,8 +26,12 @@ Color defPurple = const Color(0xff6861ce), defPurple2 = const Color(0xff5c55bf);
 Color defOrange2 = const Color(0xffe7a92c), defblue2 = const Color(0xff22328f);
 Color defTaro1 = const Color(0xff8894c4), defTaro2 = const Color(0xffa4a9cf);
 Color defTaro3 = const Color(0xff7c8cbc), defwheat = const Color(0xfff6d99c);
-var defblue3 = Colors.blue[100], defred2 = Colors.red[100], defgreen2 = Colors.green[100];
-var deforg3 = Colors.orange[200], defyel = Colors.yellow[100], defteal = Colors.teal[100];
+var defblue3 = Colors.blue[100],
+    defred2 = Colors.red[100],
+    defgreen2 = Colors.green[100];
+var deforg3 = Colors.orange[200],
+    defyel = Colors.yellow[100],
+    defteal = Colors.teal[100];
 
 //Global Temp Variable
 var qrVariable = "-", qrSpk = "-", qrRakAwl = "-", qrRakAkh = "-", zplBar = "";
@@ -84,7 +90,8 @@ class Global {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
           contentPadding: const EdgeInsets.only(top: 10.0),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -114,7 +121,8 @@ class Global {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
           contentPadding: const EdgeInsets.only(top: 10.0),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -145,7 +153,8 @@ class Global {
       builder: (BuildContext context) {
         return WillPopScope(
           child: AlertDialog(
-            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
             contentPadding: const EdgeInsets.only(top: 10.0),
             content: Container(
               height: getWidth(context) / 3,
@@ -178,7 +187,8 @@ class Global {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
           contentPadding: const EdgeInsets.only(top: 10.0),
           content: SizedBox(
             height: getWidth(context) / 3,
@@ -201,8 +211,10 @@ class Global {
                       onTap: () => exit(0),
                       child: Container(
                         decoration: decCont2(defaultRed, 10, 10, 10, 10),
-                        padding: EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
-                        child: Text("   Ya   ", style: styleText6(14, defWhite)),
+                        padding: EdgeInsets.only(
+                            left: 25, right: 25, top: 10, bottom: 10),
+                        child:
+                            Text("   Ya   ", style: styleText6(14, defWhite)),
                       ),
                     ),
                     SizedBox(width: 10),
@@ -210,7 +222,8 @@ class Global {
                       onTap: () => Navigator.pop(context),
                       child: Container(
                         decoration: decCont2(defaultBlue, 10, 10, 10, 10),
-                        padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                        padding: EdgeInsets.only(
+                            left: 20, right: 20, top: 10, bottom: 10),
                         child: Text("Tidak", style: styleText6(14, defWhite)),
                       ),
                     ),
@@ -231,7 +244,8 @@ class Global {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
           contentPadding: const EdgeInsets.only(top: 10.0),
           content: SizedBox(
             height: getWidth(context) / 3,
@@ -258,8 +272,10 @@ class Global {
                       },
                       child: Container(
                         decoration: decCont2(defaultRed, 10, 10, 10, 10),
-                        padding: EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
-                        child: Text("   Ya   ", style: styleText6(14, defWhite)),
+                        padding: EdgeInsets.only(
+                            left: 25, right: 25, top: 10, bottom: 10),
+                        child:
+                            Text("   Ya   ", style: styleText6(14, defWhite)),
                       ),
                     ),
                     SizedBox(width: 10),
@@ -267,7 +283,8 @@ class Global {
                       onTap: () => Navigator.pop(context),
                       child: Container(
                         decoration: decCont2(defaultBlue, 10, 10, 10, 10),
-                        padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                        padding: EdgeInsets.only(
+                            left: 20, right: 20, top: 10, bottom: 10),
                         child: Text("Tidak", style: styleText6(14, defWhite)),
                       ),
                     ),
@@ -286,11 +303,14 @@ class Global {
 
   //Styling ======================================================================
   styleText1() => const TextStyle(color: Colors.grey);
-  styleText2(double size) => TextStyle(color: defWhite, fontWeight: FontWeight.bold, fontSize: size);
+  styleText2(double size) =>
+      TextStyle(color: defWhite, fontWeight: FontWeight.bold, fontSize: size);
   styleText3(double size) => TextStyle(color: defWhite, fontSize: size);
   styleText4(double size) => TextStyle(color: Colors.black, fontSize: size);
-  styleText5(double size, Color color) => TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: size);
-  styleText6(double size, Color color) => TextStyle(color: color, fontSize: size);
+  styleText5(double size, Color color) =>
+      TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: size);
+  styleText6(double size, Color color) =>
+      TextStyle(color: color, fontSize: size);
   radiusVal(radius) => Radius.circular(radius);
 
   decorationContainer1(color, radius) {
@@ -332,7 +352,10 @@ class Global {
 
   decorationContainerGradient(color1, color2, radius) {
     return BoxDecoration(
-      gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [color1, color2]),
+      gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [color1, color2]),
       borderRadius: BorderRadius.all(radiusVal(radius)),
       boxShadow: [
         BoxShadow(
@@ -347,7 +370,10 @@ class Global {
 
   decorationGradient3Color(color1, color2, bl, br, tl, tr) {
     return BoxDecoration(
-      gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [color1, color2]),
+      gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [color1, color2]),
       borderRadius: BorderRadius.only(
         bottomLeft: radiusVal(bl),
         topLeft: radiusVal(tl),
@@ -391,7 +417,8 @@ class Global {
     );
   }
 
-  decCont2(color, double radiusBl, double radiusBr, double radiusTl, double radiusTr) {
+  decCont2(color, double radiusBl, double radiusBr, double radiusTl,
+      double radiusTr) {
     return BoxDecoration(
       color: color,
       borderRadius: BorderRadius.only(
@@ -411,7 +438,8 @@ class Global {
     );
   }
 
-  decCont(color, double radiusBl, double radiusBr, double radiusTl, double radiusTr) {
+  decCont(color, double radiusBl, double radiusBr, double radiusTl,
+      double radiusTr) {
     return BoxDecoration(
       color: color,
       borderRadius: BorderRadius.only(
@@ -456,5 +484,107 @@ class Global {
 
     // Tambahkan simbol Rp di depan
     return 'Rp $formatted';
+  }
+
+  // Keranjang Belanja
+  Future<void> addToCart(object, context, cntCart) async {
+    var checkCart = await preference.getData("cart"), msg = "menambahkan ke";
+    object["qty"] = cntCart;
+    Map tempCart;
+
+    if (checkCart == null) {
+      tempCart = {
+        "cart": [object]
+      };
+    } else {
+      tempCart = jsonDecode(utf8.decode(base64.decode(checkCart)));
+      Map<String, dynamic>? targetElemen = tempCart['cart'].firstWhere(
+        (elemen) => elemen['id'] == object["id"],
+        orElse: () => null,
+      );
+      if (targetElemen != null) {
+        if (cntCart == 0) {
+          tempCart['cart']
+              .removeWhere((elemen) => elemen['id'] == object["id"]);
+          msg = "menghapus dari";
+        } else {
+          msg = "mengupdate ke";
+          targetElemen["qty"] = cntCart;
+        }
+      } else {
+        tempCart["cart"].add(object);
+      }
+    }
+    await preference.setString(
+        "cart", base64Encode(utf8.encode(jsonEncode(tempCart))));
+    if (msg != "menghapus dari") {
+      alertSuccess(context, "Berhasil $msg keranjang");
+    }
+  }
+
+  alertConfirmation({
+    required BuildContext context,
+    required var action,
+    required String message,
+    String ok = '   Ya   ',
+    String no = 'Tidak',
+    bool isPop = true,
+  }) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          onWillPop: () async {
+            return isPop;
+          },
+          child: AlertDialog(
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 10),
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  child: Text(
+                    message,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: global.getWidth(context) / 20),
+                  ),
+                ),
+                Row(
+                  children: [
+                    Spacer(),
+                    GestureDetector(
+                      onTap: action,
+                      child: Container(
+                        decoration: decCont2(defBlue, 10, 10, 10, 10),
+                        padding: EdgeInsets.only(
+                            left: 25, right: 25, top: 10, bottom: 10),
+                        child: Text(" $ok ", style: styleText5(14, defWhite)),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        decoration: decCont2(defRed, 10, 10, 10, 10),
+                        padding: EdgeInsets.only(
+                            left: 20, right: 20, top: 10, bottom: 10),
+                        child: Text(" $no ", style: styleText5(14, defWhite)),
+                      ),
+                    ),
+                    Spacer(),
+                  ],
+                ),
+                SizedBox(height: 10),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }
