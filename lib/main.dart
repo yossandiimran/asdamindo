@@ -56,79 +56,33 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blueGrey.shade50,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
             Container(
               height: 400,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/background.png'),
-                  fit: BoxFit.fill,
-                ),
-              ),
+              // decoration: BoxDecoration(
+              //   image: DecorationImage(
+              //     image: AssetImage('assets/images/background.png'),
+              //     fit: BoxFit.fill,
+              //   ),
+              // ),
               child: Stack(
                 children: <Widget>[
-                  Positioned(
-                    left: 30,
-                    width: 80,
-                    height: 200,
-                    child: FadeInUp(
-                      duration: Duration(seconds: 1),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/light-1.png'),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    left: 140,
-                    width: 80,
-                    height: 150,
-                    child: FadeInUp(
-                      duration: Duration(milliseconds: 1200),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/light-2.png'),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 40,
-                    top: 40,
-                    width: 80,
-                    height: 150,
-                    child: FadeInUp(
-                      duration: Duration(milliseconds: 1300),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/images/clock.png'),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                   Positioned(
                     child: FadeInUp(
                       duration: Duration(milliseconds: 1600),
                       child: Container(
-                        margin: EdgeInsets.only(top: 50),
+                        margin: EdgeInsets.only(top: 0),
                         child: Center(
                           child: Text(
                             "Asdamindo\nE-Commerce",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 40,
+                              color: Color.fromRGBO(0, 162, 232, 1),
+                              fontSize: 34,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -150,9 +104,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: Color.fromRGBO(143, 148, 251, 1),
-                        ),
+                        // border: Border.all(
+                        //   color: Color.fromRGBO(0, 162, 232, 1),
+                        // ),
                         boxShadow: [
                           BoxShadow(
                             color: Color.fromRGBO(143, 148, 251, .2),
@@ -165,13 +119,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         children: <Widget>[
                           Container(
                             padding: EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Color.fromRGBO(143, 148, 251, 1),
-                                ),
-                              ),
-                            ),
+                            // decoration: BoxDecoration(
+                            //   border: Border(
+                            //     bottom: BorderSide(
+                            //       color: Color.fromRGBO(0, 162, 232, 1),
+                            //     ),
+                            //   ),
+                            // ),
                             child: TextField(
                               controller: user,
                               decoration: InputDecoration(
@@ -220,8 +174,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           borderRadius: BorderRadius.circular(10),
                           gradient: LinearGradient(
                             colors: [
-                              Color.fromRGBO(143, 148, 251, 1),
-                              Color.fromRGBO(143, 148, 251, .6),
+                              Color.fromRGBO(0, 162, 232, 1),
+                              Color.fromRGBO(153, 217, 234, 1),
                             ],
                           ),
                         ),
@@ -257,27 +211,27 @@ class _MyHomePageState extends State<MyHomePage> {
                             "Butuh akun?",
                             style: TextStyle(
                               fontStyle: FontStyle.italic,
-                              color: Color.fromRGBO(143, 148, 251, 1),
+                              color: Color.fromRGBO(0, 162, 232, 1),
                             ),
                           ),
                         ),
                       ),
                       Spacer(),
-                      FadeInUp(
-                        duration: Duration(milliseconds: 2000),
-                        child: GestureDetector(
-                          onTap: () async {
-                            print("Login Nih");
-                          },
-                          child: Text(
-                            "Lupa sandi?",
-                            style: TextStyle(
-                              fontStyle: FontStyle.italic,
-                              color: Color.fromRGBO(251, 204, 143, 1),
-                            ),
-                          ),
-                        ),
-                      ),
+                      // FadeInUp(
+                      //   duration: Duration(milliseconds: 2000),
+                      //   child: GestureDetector(
+                      //     onTap: () async {
+                      //       print("Login Nih");
+                      //     },
+                      //     child: Text(
+                      //       "Lupa sandi?",
+                      //       style: TextStyle(
+                      //         fontStyle: FontStyle.italic,
+                      //         color: Color.fromRGBO(251, 204, 143, 1),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ],

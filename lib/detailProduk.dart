@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'dart:convert';
 
 import 'package:asdamindo/helper/global.dart';
@@ -211,11 +213,16 @@ class DetailBarangState extends State<DetailBarang> {
                       SizedBox(height: 10),
                       ListTile(
                         visualDensity: VisualDensity(vertical: -4),
-                        subtitle: Text(widget.obj["nama_produk"]),
+                        subtitle: Text(
+                          'Seller : ' + widget.obj["owner"],
+                          style: global.styleText4(15),
+                        ),
                       ),
                       ListTile(
                         visualDensity: VisualDensity(vertical: -4),
-                        subtitle: Text("${widget.obj["keterangan"]}"),
+                        subtitle: Text(
+                          "${widget.obj["keterangan"]}",
+                        ),
                       ),
                       SizedBox(height: 10),
                       SizedBox(height: global.getHeight(context) - (kToolbarHeight * 5.8)),
@@ -233,6 +240,20 @@ class DetailBarangState extends State<DetailBarang> {
   Future<void> addToCart() async {
     var checkCart = await preference.getData("cart"), msg = "menambahkan";
     widget.obj["qty"] = cntCart;
+
+    var tempCarts = await preference.getData("cart");
+    var listCart = [];
+    if (tempCarts != null) {
+      listCart = jsonDecode(utf8.decode(base64.decode(tempCarts)))["cart"];
+    }
+
+    if (listCart.where((element) => element["owner"] != widget.obj["owner"]).isNotEmpty) {
+      return global.alertWarning(
+        context,
+        "Barang yang anda masukan di keranjang harus melalui seller yang sama, untuk order barang dari seller berbeda mohon checkout keranjang anda atau kosongkan terlebih dahulu, terimakasih.",
+      );
+    }
+
     if (cntCart < 1) {
       return global.alertWarning(context, "Barang tidak boleh kurang dari 1");
     }

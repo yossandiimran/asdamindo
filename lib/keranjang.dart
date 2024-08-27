@@ -151,6 +151,15 @@ class KeranjangState extends State<Keranjang> {
                             ),
                           ],
                         ),
+                        Row(
+                          children: [
+                            Text(
+                              "Order ke Seller : ${listCart.isNotEmpty ? listCart[0]["owner"] : "-"}",
+                              style: global.styleText5(12, defBlack1),
+                            ),
+                            Spacer(),
+                          ],
+                        ),
                         SizedBox(height: 20),
                         Container(
                           child: TextField(
@@ -173,7 +182,6 @@ class KeranjangState extends State<Keranjang> {
                                     context: context,
                                     action: () {
                                       preference.remove("cart");
-                                      Navigator.pop(context);
                                       Navigator.pop(context);
                                       global.alertSuccess(context, "Keranjang berhasil dihapus");
                                     },
@@ -238,10 +246,10 @@ class KeranjangState extends State<Keranjang> {
     pb.collection('transaksi').create(
       body: {
         "id_user_pembeli": preference.getData("id"),
-        "id_user_penjual": null,
+        "id_user_penjual": listCart[0]["id_user"],
         "total_harga": grandTotal,
         "keterangan": ketController.text,
-        "catatan": null,
+        "catatan": "Order ke Seller : ${listCart.isNotEmpty ? listCart[0]["owner"] : "-"}",
         "alamat_pengiriman": preference.getData("alamat"),
         "status": "new"
       },

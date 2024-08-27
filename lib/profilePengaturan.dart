@@ -86,7 +86,7 @@ class _PengaturanProfileState extends State<PengaturanProfile> {
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: Color.fromRGBO(143, 148, 251, 1),
+                          color: Color.fromRGBO(0, 162, 232, 1),
                         ),
                         boxShadow: [
                           BoxShadow(
@@ -103,7 +103,7 @@ class _PengaturanProfileState extends State<PengaturanProfile> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: Color.fromRGBO(143, 148, 251, 1),
+                                  color: Color.fromRGBO(0, 162, 232, 1),
                                 ),
                               ),
                             ),
@@ -122,7 +122,7 @@ class _PengaturanProfileState extends State<PengaturanProfile> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: Color.fromRGBO(143, 148, 251, 1),
+                                  color: Color.fromRGBO(0, 162, 232, 1),
                                 ),
                               ),
                             ),
@@ -140,7 +140,7 @@ class _PengaturanProfileState extends State<PengaturanProfile> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: Color.fromRGBO(143, 148, 251, 1),
+                                  color: Color.fromRGBO(0, 162, 232, 1),
                                 ),
                               ),
                             ),
@@ -159,7 +159,7 @@ class _PengaturanProfileState extends State<PengaturanProfile> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: Color.fromRGBO(143, 148, 251, 1),
+                                  color: Color.fromRGBO(0, 162, 232, 1),
                                 ),
                               ),
                             ),
@@ -177,7 +177,7 @@ class _PengaturanProfileState extends State<PengaturanProfile> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: Color.fromRGBO(143, 148, 251, 1),
+                                  color: Color.fromRGBO(0, 162, 232, 1),
                                 ),
                               ),
                             ),
@@ -195,7 +195,7 @@ class _PengaturanProfileState extends State<PengaturanProfile> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: Color.fromRGBO(143, 148, 251, 1),
+                                  color: Color.fromRGBO(0, 162, 232, 1),
                                 ),
                               ),
                             ),
@@ -213,7 +213,7 @@ class _PengaturanProfileState extends State<PengaturanProfile> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: Color.fromRGBO(143, 148, 251, 1),
+                                  color: Color.fromRGBO(0, 162, 232, 1),
                                 ),
                               ),
                             ),
@@ -231,7 +231,7 @@ class _PengaturanProfileState extends State<PengaturanProfile> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: Color.fromRGBO(143, 148, 251, 1),
+                                  color: Color.fromRGBO(0, 162, 232, 1),
                                 ),
                               ),
                             ),
@@ -249,7 +249,7 @@ class _PengaturanProfileState extends State<PengaturanProfile> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: Color.fromRGBO(143, 148, 251, 1),
+                                  color: Color.fromRGBO(0, 162, 232, 1),
                                 ),
                               ),
                             ),
@@ -292,8 +292,8 @@ class _PengaturanProfileState extends State<PengaturanProfile> {
                           borderRadius: BorderRadius.circular(10),
                           gradient: LinearGradient(
                             colors: [
-                              Color.fromRGBO(143, 148, 251, 1),
-                              Color.fromRGBO(143, 148, 251, .6),
+                              Color.fromRGBO(0, 162, 232, 1),
+                              Color.fromRGBO(153, 217, 234, 1),
                             ],
                           ),
                         ),

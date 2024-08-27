@@ -38,10 +38,10 @@ class _HomePageState extends State<HomePage> {
 
   int visit = 0;
   double height = 30;
-  Color colorSelect = const Color(0XFF0686F8);
-  Color color = const Color(0XFF7AC0FF);
+  Color colorSelect = Color.fromARGB(255, 116, 120, 124);
+  Color color = Color.fromARGB(255, 0, 0, 0);
   Color color2 = Colors.white;
-  Color bgColor = Color.fromRGBO(143, 148, 251, 1);
+  Color bgColor = Color.fromRGBO(0, 162, 232, 1);
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -63,8 +63,8 @@ class _HomePageState extends State<HomePage> {
         body: getIndex(),
         bottomNavigationBar: BottomBarInspiredInside(
           items: items,
-          backgroundColor: bgColor,
-          color: Colors.white,
+          backgroundColor: Colors.white,
+          color: defBlack1,
           colorSelected: Colors.white,
           indexSelected: visit,
           onTap: (int index) => setState(() {

@@ -1,7 +1,10 @@
 // ignore_for_file: no_logic_in_create_state, prefer_typing_uninitialized_variables
 
+import 'dart:convert';
+
 import 'package:asdamindo/helper/global.dart';
 import 'package:asdamindo/listBatangPribadi.dart';
+import 'package:asdamindo/listTransaksi.dart';
 import 'package:asdamindo/profilePengaturan.dart';
 import 'package:flutter/material.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -13,7 +16,31 @@ class ProfileWidget extends StatefulWidget {
   State<ProfileWidget> createState() => _ProfileWidgetState();
 }
 
+var jmlProduk = 0;
+var jmlTransaksi = 0;
+
 class _ProfileWidgetState extends State<ProfileWidget> {
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  loadData() async {
+    await pb.collection('produk').getFullList(filter: "id_user = '${preference.getData("id")}'").then((value) {
+      jmlProduk = jsonDecode(value.toString()).length;
+      setState(() {});
+    });
+    await pb
+        .collection('transaksi')
+        .getFullList(filter: "id_user_pembeli = '${preference.getData("id")}'")
+        .then((value) {
+      jmlTransaksi = jsonDecode(value.toString()).length;
+      setState(() {});
+    });
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     page({required Widget child}) => Styled.widget(child: child)
@@ -63,10 +90,8 @@ class UserCard extends StatelessWidget {
 
   Widget _buildUserStats() {
     return <Widget>[
-      _buildUserStatsItem('3', 'Produk'),
-      _buildUserStatsItem('51', 'Transaksi'),
-      _buildUserStatsItem('21', 'Followers'),
-      _buildUserStatsItem('33', 'Following'),
+      _buildUserStatsItem('$jmlProduk', 'Produk'),
+      _buildUserStatsItem('$jmlTransaksi', 'Transaksi'),
     ].toRow(mainAxisAlignment: MainAxisAlignment.spaceAround).padding(vertical: 10);
   }
 
@@ -119,8 +144,15 @@ class ActionsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => <Widget>[
-        _buildActionItem('Saldo', Icons.attach_money),
-        _buildActionItem('Transaksi', Icons.card_giftcard),
+        // _buildActionItem('Saldo', Icons.attach_money),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return ListTransaksi();
+            }));
+          },
+          child: _buildActionItem('Transaksi', Icons.card_giftcard),
+        ),
         _buildActionItem('Pesan', Icons.message),
         _buildActionItem('Notifikasi', Icons.notifications),
       ].toRow(mainAxisAlignment: MainAxisAlignment.spaceAround);

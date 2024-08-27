@@ -21,7 +21,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   Future<void> getListProduct() async {
-    await pb.collection('produk').getFullList().then((value) {
+    await pb.collection('view_produk_join_user').getFullList().then((value) {
       products = jsonDecode(value.toString());
       setState(() {});
     }).catchError((err) {
@@ -80,17 +80,17 @@ class _HomeWidgetState extends State<HomeWidget> {
                       },
                       child: Container(
                         margin: EdgeInsets.all(10),
-                        decoration: global.decCont(Color.fromRGBO(143, 148, 251, 1).withOpacity(0.2), 10, 10, 10, 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              "${global.baseIp}/api/files/${element["collectionId"]}/${element["id"]}/${element["foto_produk"][0]}",
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                         child: Stack(
                           children: [
-                            element["foto_produk"] != []
-                                ? Container(
-                                    padding: EdgeInsets.all(5),
-                                    child: Image.network(
-                                      "${global.baseIp}/api/files/${element["collectionId"]}/${element["id"]}/${element["foto_produk"][0]}",
-                                    ),
-                                  )
-                                : Icon(Icons.image, size: 50),
                             Container(
                               child: Column(
                                 children: [
@@ -98,7 +98,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                   Container(
                                     padding: EdgeInsets.all(5),
                                     decoration:
-                                        global.decCont(Color.fromRGBO(143, 148, 251, 1).withOpacity(0.8), 10, 10, 0, 0),
+                                        global.decCont(Color.fromRGBO(0, 162, 232, 1).withOpacity(0.5), 10, 10, 0, 0),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.start,

@@ -66,7 +66,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
         leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: defWhite)),
         title: Text('Daftar Produk Anda', style: global.styleText5(global.getWidth(context) / 18, defWhite)),
         centerTitle: true,
-        backgroundColor: Color.fromRGBO(143, 148, 251, 1),
+        backgroundColor: Color.fromRGBO(0, 162, 232, 1),
       ),
       body: ListView(
         children: [SizedBox(height: 10), for (var i = 0; i < products.length; i++) getChildList(products[i])],
