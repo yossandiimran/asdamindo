@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
         physics: BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
-            Container(
+            SizedBox(
               height: 400,
               // decoration: BoxDecoration(
               //   image: DecorationImage(

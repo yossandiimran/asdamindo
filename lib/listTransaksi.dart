@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, prefer_const_declarations
+
 import 'dart:convert';
 
 import 'package:asdamindo/helper/global.dart';
@@ -5,6 +7,7 @@ import 'package:asdamindo/listTransaksiDetail.dart';
 import 'package:asdamindo/listTransaksiFormPembayaran.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class ListTransaksi extends StatefulWidget {
   const ListTransaksi({super.key});
@@ -135,7 +138,14 @@ class ListTransaksiState extends State<ListTransaksi> {
                             children: [
                               listOrder[i]["status"] == 'verification'
                                   ? GestureDetector(
-                                      onTap: () {},
+                                      onTap: () async {
+                                        final url =
+                                            'https://wa.me/6281224580919?text=Konfirmasi Pesanan Mohon Di Proses';
+                                        await launchUrlString(
+                                          url,
+                                          mode: LaunchMode.externalApplication,
+                                        );
+                                      },
                                       child: Container(
                                         padding: EdgeInsets.symmetric(vertical: 10),
                                         decoration: global.decCont(defWhite, 10, 10, 10, 10),

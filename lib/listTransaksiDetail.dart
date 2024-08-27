@@ -19,6 +19,7 @@ class _ListTransaksiDetailState extends State<ListTransaksiDetail> {
   var descriptionController = "";
   var grandTotal = 0;
   XFile? imageFile;
+  var listOrderDetail = [];
 
   final objParam;
   _ListTransaksiDetailState(this.objParam);
@@ -33,8 +34,11 @@ class _ListTransaksiDetailState extends State<ListTransaksiDetail> {
     nameController = objParam["id"];
     descriptionController = objParam["keterangan"];
     noteController = objParam["catatan"];
-    await pb.collection('transaksi_detail').getFullList(filter: "id_transaksi = '${objParam["id"]}'").then((value) {
-      var listOrderDetail = jsonDecode(value.toString());
+    await pb
+        .collection('transaksi_detail_view')
+        .getFullList(filter: "id_transaksi = '${objParam["id"]}'")
+        .then((value) {
+      listOrderDetail = jsonDecode(value.toString());
       grandTotal = 0;
       for (var i = 0; i < listOrderDetail.length; i++) {
         grandTotal =
@@ -72,30 +76,67 @@ class _ListTransaksiDetailState extends State<ListTransaksiDetail> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  child: ListTile(
-                    title: Text("Id Transaksi"),
-                    subtitle: Text(nameController),
+                Card(
+                  child: Column(
+                    children: [
+                      Container(
+                        child: ListTile(
+                          title: Text("Id Transaksi"),
+                          subtitle: Text(nameController),
+                        ),
+                      ),
+                      Container(
+                        child: ListTile(
+                          title: Text("Keterangan"),
+                          subtitle: Text(descriptionController),
+                        ),
+                      ),
+                      Container(
+                        child: ListTile(
+                          title: Text("Note"),
+                          subtitle: Text(noteController),
+                        ),
+                      ),
+                      Container(
+                        child: ListTile(
+                          title: Text("Total Belanja"),
+                          subtitle: Text(global.formatRupiah(grandTotal.toDouble())),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Container(
-                  child: ListTile(
-                    title: Text("Keterangan"),
-                    subtitle: Text(descriptionController),
+                Divider(),
+                Container(padding: EdgeInsets.symmetric(horizontal: 10), child: Text("List Barang yang di order :")),
+                Divider(),
+                for (var i = 0; i < listOrderDetail.length; i++)
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                    decoration: global.decCont(defWhite, 0, 0, 0, 0),
+                    child: ListTile(
+                      leading: SizedBox(
+                        width: 60,
+                        child: Image.network(
+                          "${global.baseIp}/api/files/${listOrderDetail[i]["collectionId"]}/${listOrderDetail[i]["id"]}/${listOrderDetail[i]["foto_produk"][0]}",
+                        ),
+                      ),
+                      title: Text(listOrderDetail[i]["nama_produk"], style: global.styleText4(13)),
+                      subtitle: Row(
+                        children: [
+                          Text("${listOrderDetail[i]["qty"]}", style: global.styleText5(13, defGrey)),
+                          Text(" x ", style: global.styleText5(13, defGrey)),
+                          Text(global.formatRupiah(double.parse(listOrderDetail[i]["harga_satuan"])),
+                              style: global.styleText5(13, defGrey)),
+                          Spacer(),
+                          Text(
+                            global.formatRupiah(double.parse(listOrderDetail[i]["harga_satuan"].toString()) *
+                                double.parse(listOrderDetail[i]["qty"])),
+                            style: global.styleText5(13, defBlack1),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                Container(
-                  child: ListTile(
-                    title: Text("Note"),
-                    subtitle: Text(noteController),
-                  ),
-                ),
-                Container(
-                  child: ListTile(
-                    title: Text("Total Belanja"),
-                    subtitle: Text(global.formatRupiah(grandTotal.toDouble())),
-                  ),
-                ),
                 SizedBox(height: 16.0),
               ],
             ),
