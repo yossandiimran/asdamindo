@@ -1,8 +1,9 @@
-// ignore_for_file: no_logic_in_create_state, prefer_typing_uninitialized_variables
+// ignore_for_file: no_logic_in_create_state, prefer_typing_uninitialized_variables, must_be_immutable
 
 import 'dart:convert';
 
 import 'package:asdamindo/helper/global.dart';
+import 'package:asdamindo/listAccPembelian.dart';
 import 'package:asdamindo/listBatangPribadi.dart';
 import 'package:asdamindo/listTransaksi.dart';
 import 'package:asdamindo/profilePengaturan.dart';
@@ -173,39 +174,46 @@ class SettingsItemModel {
   });
 }
 
-const List<SettingsItemModel> settingsItems = [
-  SettingsItemModel(
-    icon: Icons.dashboard,
-    color: Color(0xffF468B7),
-    title: 'Produk',
-    description: 'Daftar Produk Anda',
-    onTapEvent: "Produk",
-  ),
-  SettingsItemModel(
-    icon: Icons.settings,
-    color: Color(0xff8D7AEE),
-    title: 'Pengaturan',
-    description: 'Ubah pengaturan alamat, profile, dll',
-    onTapEvent: "Pengaturan",
-  ),
-  SettingsItemModel(
-    icon: Icons.logout_rounded,
-    color: Color.fromARGB(255, 228, 43, 22),
-    title: 'Logout',
-    description: 'Keluar dari akun anda',
-    onTapEvent: "Logout",
-  ),
-  // SettingsItemModel(
-  //   icon: Icons.question_answer,
-  //   color: Color(0xffBFACAA),
-  //   title: 'Support',
-  //   description: 'Hubungi admin asdamindo',
-  //   onTapEvent: "Support",
-  // ),
-];
-
 class Settings extends StatelessWidget {
-  const Settings({super.key});
+  Settings({super.key});
+  List<SettingsItemModel> settingsItems = [
+    if (preference.getData("is_member").toString() == 'false')
+      SettingsItemModel(
+        icon: Icons.check_circle_outlined,
+        color: Color.fromARGB(255, 104, 244, 130),
+        title: 'Acc Pembelian',
+        description: 'Cek bukti transfer pembelian anggota',
+        onTapEvent: "Acc",
+      ),
+    SettingsItemModel(
+      icon: Icons.dashboard,
+      color: Color(0xffF468B7),
+      title: 'Produk',
+      description: 'Daftar Produk Anda',
+      onTapEvent: "Produk",
+    ),
+    SettingsItemModel(
+      icon: Icons.settings,
+      color: Color(0xff8D7AEE),
+      title: 'Pengaturan',
+      description: 'Ubah pengaturan alamat, profile, dll',
+      onTapEvent: "Pengaturan",
+    ),
+    SettingsItemModel(
+      icon: Icons.logout_rounded,
+      color: Color.fromARGB(255, 228, 43, 22),
+      title: 'Logout',
+      description: 'Keluar dari akun anda',
+      onTapEvent: "Logout",
+    ),
+    // SettingsItemModel(
+    //   icon: Icons.question_answer,
+    //   color: Color(0xffBFACAA),
+    //   title: 'Support',
+    //   description: 'Hubungi admin asdamindo',
+    //   onTapEvent: "Support",
+    // ),
+  ];
 
   @override
   Widget build(BuildContext context) => settingsItems
@@ -259,6 +267,14 @@ class _SettingsItemState extends State<SettingsItem> {
             onTapChange: (tapStatus) => setState(() => pressed = tapStatus),
             onTapDown: (details) => print('tapDown'),
             onTap: () {
+              if (onTapEvent == "Acc") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (ctx) {
+                    return ListAccPembelian();
+                  }),
+                );
+              }
               if (onTapEvent == "Logout") global.alertLogout(context);
               if (onTapEvent == "Produk") {
                 Navigator.push(

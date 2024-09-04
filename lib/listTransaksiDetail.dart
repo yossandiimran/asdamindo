@@ -121,17 +121,24 @@ class _ListTransaksiDetailState extends State<ListTransaksiDetail> {
                         ),
                       ),
                       title: Text(listOrderDetail[i]["nama_produk"], style: global.styleText4(13)),
-                      subtitle: Row(
+                      subtitle: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("${listOrderDetail[i]["qty"]}", style: global.styleText5(13, defGrey)),
-                          Text(" x ", style: global.styleText5(13, defGrey)),
-                          Text(global.formatRupiah(double.parse(listOrderDetail[i]["harga_satuan"])),
-                              style: global.styleText5(13, defGrey)),
-                          Spacer(),
-                          Text(
-                            global.formatRupiah(double.parse(listOrderDetail[i]["harga_satuan"].toString()) *
-                                double.parse(listOrderDetail[i]["qty"])),
-                            style: global.styleText5(13, defBlack1),
+                          Text("Seller : " + listOrderDetail[i]["penjual"], style: global.styleText4(13)),
+                          Row(
+                            children: [
+                              Text("${listOrderDetail[i]["qty"]}", style: global.styleText5(13, defGrey)),
+                              Text(" x ", style: global.styleText5(13, defGrey)),
+                              Text(global.formatRupiah(double.parse(listOrderDetail[i]["harga_satuan"])),
+                                  style: global.styleText5(13, defGrey)),
+                              Spacer(),
+                              Text(
+                                global.formatRupiah(double.parse(listOrderDetail[i]["harga_satuan"].toString()) *
+                                    double.parse(listOrderDetail[i]["qty"])),
+                                style: global.styleText5(13, defBlack1),
+                              ),
+                            ],
                           ),
                         ],
                       ),

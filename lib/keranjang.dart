@@ -153,15 +153,15 @@ class KeranjangState extends State<Keranjang> {
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Text(
-                              "Order ke Seller : ${listCart.isNotEmpty ? listCart[0]["owner"] : "-"}",
-                              style: global.styleText5(12, defBlack1),
-                            ),
-                            Spacer(),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     Text(
+                        //       "Order ke Seller : ${listCart.isNotEmpty ? listCart[0]["owner"] : "-"}",
+                        //       style: global.styleText5(12, defBlack1),
+                        //     ),
+                        //     Spacer(),
+                        //   ],
+                        // ),
                         SizedBox(height: 20),
                         Container(
                           child: TextField(

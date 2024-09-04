@@ -1,21 +1,18 @@
 // ignore_for_file: deprecated_member_use, prefer_const_declarations
-
 import 'dart:convert';
-
 import 'package:asdamindo/helper/global.dart';
 import 'package:asdamindo/listTransaksiDetail.dart';
-import 'package:asdamindo/listTransaksiFormPembayaran.dart';
+import 'package:asdamindo/ListAccPembelianFormPembayaran.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
-class ListTransaksi extends StatefulWidget {
-  const ListTransaksi({super.key});
+class ListAccPembelian extends StatefulWidget {
+  const ListAccPembelian({super.key});
   @override
-  ListTransaksiState createState() => ListTransaksiState();
+  ListAccPembelianState createState() => ListAccPembelianState();
 }
 
-class ListTransaksiState extends State<ListTransaksi> {
+class ListAccPembelianState extends State<ListAccPembelian> {
   List listOrder = [];
   bool isLoading = true;
   @override
@@ -25,10 +22,7 @@ class ListTransaksiState extends State<ListTransaksi> {
   }
 
   Future<void> getDashboardData() async {
-    await pb
-        .collection('transaksi')
-        .getFullList(filter: "id_user_pembeli = '${preference.getData("id")}'")
-        .then((value) {
+    await pb.collection('transaksi_join_user').getFullList(filter: "status = 'verification'").then((value) {
       listOrder = jsonDecode(value.toString());
       setState(() {});
     }).catchError((err) {
@@ -126,6 +120,16 @@ class ListTransaksiState extends State<ListTransaksi> {
                           // ),
                           Row(
                             children: [
+                              Text("Pembeli", style: global.styleText5(12, defBlack1)),
+                              Spacer(),
+                              Text(
+                                listOrder[i]["nama"],
+                                style: global.styleText5(12, defGrey),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
                               Text("Keterangan", style: global.styleText5(12, defBlack1)),
                               Spacer(),
                               Text(
@@ -139,37 +143,14 @@ class ListTransaksiState extends State<ListTransaksi> {
                               listOrder[i]["status"] == 'verification'
                                   ? GestureDetector(
                                       onTap: () async {
-                                        final url =
-                                            'https://wa.me/6281224580919?text=Konfirmasi Pesanan Mohon Di Proses';
-                                        await launchUrlString(
-                                          url,
-                                          mode: LaunchMode.externalApplication,
-                                        );
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(vertical: 10),
-                                        decoration: global.decCont(defWhite, 10, 10, 10, 10),
-                                        child: Row(
-                                          children: [
-                                            Icon(Icons.arrow_back_ios_new, color: defPurple, size: 10),
-                                            Text("    Chat Admin", style: global.styleText5(12, defPurple)),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  : Container(),
-                              listOrder[i]["status"] == 'new' || listOrder[i]["status"] == "cancel"
-                                  ? GestureDetector(
-                                      onTap: () {
                                         Map objParam = {
                                           'id': listOrder[i]["id"],
                                           "keterangan": listOrder[i]["keterangan"],
                                           "catatan": listOrder[i]["catatan"],
                                           "info": listOrder[i],
                                         };
-                                        // Navigator.pushNamed(context, '/listOrderDetail', arguments: objParam);
                                         Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                          return ListTransaksiFormPembayaran(objParam: objParam);
+                                          return ListAccPembelianFormPembayaran(objParam: objParam);
                                         })).then((value) async {
                                           await getDashboardData();
                                           setState(() {});
@@ -180,11 +161,8 @@ class ListTransaksiState extends State<ListTransaksi> {
                                         decoration: global.decCont(defWhite, 10, 10, 10, 10),
                                         child: Row(
                                           children: [
-                                            Icon(Icons.arrow_back_ios_new, color: defBlue, size: 10),
-                                            listOrder[i]["status"] == "cancel"
-                                                ? Text("    Upload Ulang Bukti Bayar",
-                                                    style: global.styleText5(12, defBlue))
-                                                : Text("    Bayar", style: global.styleText5(12, defBlue)),
+                                            Icon(Icons.arrow_back_ios_new, color: defPurple, size: 10),
+                                            Text("    Verifikasi Pembayaran", style: global.styleText5(12, defPurple)),
                                           ],
                                         ),
                                       ),

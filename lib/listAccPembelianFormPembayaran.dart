@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
-class ListTransaksiFormPembayaran extends StatefulWidget {
+class ListAccPembelianFormPembayaran extends StatefulWidget {
   final objParam;
-  const ListTransaksiFormPembayaran({super.key, required this.objParam});
+  const ListAccPembelianFormPembayaran({super.key, required this.objParam});
   @override
-  _ListTransaksiFormPembayaranState createState() => _ListTransaksiFormPembayaranState(objParam);
+  _ListAccPembelianFormPembayaranState createState() => _ListAccPembelianFormPembayaranState(objParam);
 }
 
-class _ListTransaksiFormPembayaranState extends State<ListTransaksiFormPembayaran> {
+class _ListAccPembelianFormPembayaranState extends State<ListAccPembelianFormPembayaran> {
   final formKey = GlobalKey<FormState>();
   var nameController = "";
   var noteController = "";
@@ -24,7 +24,7 @@ class _ListTransaksiFormPembayaranState extends State<ListTransaksiFormPembayara
 
   final ImagePicker _picker = ImagePicker();
   final objParam;
-  _ListTransaksiFormPembayaranState(this.objParam);
+  _ListAccPembelianFormPembayaranState(this.objParam);
 
   @override
   void initState() {
@@ -70,7 +70,7 @@ class _ListTransaksiFormPembayaranState extends State<ListTransaksiFormPembayara
       extendBody: true,
       appBar: AppBar(
         title: Text(
-          'Upload Bukti Pembayaran',
+          'Verifikasi Pembayaran',
           style: global.styleText5(15, defBlack1),
         ),
       ),
@@ -90,51 +90,73 @@ class _ListTransaksiFormPembayaranState extends State<ListTransaksiFormPembayara
                 ),
                 Card(
                   child: ListTile(
+                    title: Text("Pembeli"),
+                    subtitle: Text(objParam["info"]["nama"]),
+                  ),
+                ),
+                Card(
+                  child: ListTile(
                     title: Text("Keterangan"),
                     subtitle: Text(descriptionController),
                   ),
                 ),
-                // Card(
-                //   child: ListTile(
-                //     title: Text("Note"),
-                //     subtitle: Text(noteController),
-                //   ),
-                // ),
                 Card(
                   child: ListTile(
                     title: Text("Jumlah yang harus dibayar"),
                     subtitle: Text(global.formatRupiah(grandTotal.toDouble())),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  alignment: Alignment.center,
+                  width: global.getWidth(context),
+                  child: Image.network(
+                    "${global.baseIp}/api/files/${objParam["info"]["collectionId"]}/${objParam["info"]["id"]}/${objParam["info"]["bukti_transaksi"]}",
+                  ),
+                ),
+                SizedBox(height: 10),
                 Row(
                   children: <Widget>[
-                    imageFile == null
-                        ? Text('Belum ada foto')
-                        : Image.file(
-                            File(imageFile!.path),
-                            width: 100,
-                            height: 100,
-                            fit: BoxFit.cover,
-                          ),
-                    SizedBox(width: 16.0),
-                    ElevatedButton(
-                      onPressed: _pickImage,
-                      child: Text('Pilih Foto'),
+                    Spacer(),
+                    Center(
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green),
+                        ),
+                        onPressed: () {
+                          global.alertConfirmation(
+                            context: context,
+                            action: () {
+                              processFormCreate("pay");
+                            },
+                            message: "Yakin untuk Acc?",
+                          );
+                        },
+                        child: Text('  Acc  ', style: global.styleText5(14, defWhite)),
+                      ),
                     ),
+                    SizedBox(width: 20),
+                    Center(
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red),
+                        ),
+                        onPressed: () {
+                          global.alertConfirmation(
+                            context: context,
+                            action: () {
+                              processFormCreate("cancel");
+                            },
+                            message: "Tolak pembayaran?",
+                          );
+                        },
+                        child: Text('Tolak', style: global.styleText5(14, defWhite)),
+                      ),
+                    ),
+                    Spacer(),
                   ],
                 ),
                 SizedBox(height: 16.0),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        processFormCreate();
-                      }
-                    },
-                    child: Text('Kirim'),
-                  ),
-                ),
               ],
             ),
           ),
@@ -143,19 +165,19 @@ class _ListTransaksiFormPembayaranState extends State<ListTransaksiFormPembayara
     );
   }
 
-  Future<void> processFormCreate() async {
+  Future<void> processFormCreate(status) async {
+    global.loadingAlert(context, "Mohon tunggu...", false);
     try {
       pb.collection('transaksi').update(
         objParam["id"],
-        body: {'status': "verification"},
-        files: [
-          await http.MultipartFile.fromPath('bukti_transaksi', imageFile!.path),
-        ],
+        body: {'status': status},
       ).then((record) {
+        Navigator.pop(context);
+        Navigator.pop(context);
         Navigator.pop(context);
         global.alertSuccess(
           context,
-          "Berhasil Mengupload Bukti Bayar, mohon untuk melakukan konfirmasi kepada admin asdamindo",
+          "Berhasil memproses transaksi !",
         );
       }).catchError((err) {
         print(err);

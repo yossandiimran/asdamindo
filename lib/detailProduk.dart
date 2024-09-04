@@ -241,18 +241,18 @@ class DetailBarangState extends State<DetailBarang> {
     var checkCart = await preference.getData("cart"), msg = "menambahkan";
     widget.obj["qty"] = cntCart;
 
-    var tempCarts = await preference.getData("cart");
-    var listCart = [];
-    if (tempCarts != null) {
-      listCart = jsonDecode(utf8.decode(base64.decode(tempCarts)))["cart"];
-    }
+    // var tempCarts = await preference.getData("cart");
+    // var listCart = [];
+    // if (tempCarts != null) {
+    //   listCart = jsonDecode(utf8.decode(base64.decode(tempCarts)))["cart"];
+    // }
 
-    if (listCart.where((element) => element["owner"] != widget.obj["owner"]).isNotEmpty) {
-      return global.alertWarning(
-        context,
-        "Barang yang anda masukan di keranjang harus melalui seller yang sama, untuk order barang dari seller berbeda mohon checkout keranjang anda atau kosongkan terlebih dahulu, terimakasih.",
-      );
-    }
+    // if (listCart.where((element) => element["owner"] != widget.obj["owner"]).isNotEmpty) {
+    //   return global.alertWarning(
+    //     context,
+    //     "Barang yang anda masukan di keranjang harus melalui seller yang sama, untuk order barang dari seller berbeda mohon checkout keranjang anda atau kosongkan terlebih dahulu, terimakasih.",
+    //   );
+    // }
 
     if (cntCart < 1) {
       return global.alertWarning(context, "Barang tidak boleh kurang dari 1");
