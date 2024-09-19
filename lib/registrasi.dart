@@ -17,10 +17,9 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
   TextEditingController nama = TextEditingController(text: "");
   TextEditingController noHp = TextEditingController(text: "");
   TextEditingController alamat = TextEditingController(text: "");
-  TextEditingController npwp = TextEditingController(text: "");
-  TextEditingController kota = TextEditingController(text: "");
-  TextEditingController sk = TextEditingController(text: "");
   TextEditingController kodePos = TextEditingController(text: "");
+  TextEditingController emailVerif = TextEditingController(text: "");
+  bool isObsecure = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,8 +131,16 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                             ),
                             child: TextField(
                               controller: pass,
-                              obscureText: true,
+                              obscureText: isObsecure,
                               decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isObsecure = isObsecure ? false : true;
+                                    });
+                                  },
+                                  icon: Icon(isObsecure ? Icons.visibility : Icons.visibility_off),
+                                ),
                                 border: InputBorder.none,
                                 hintText: "Password",
                                 hintStyle: TextStyle(color: Colors.grey[700]),
@@ -154,42 +161,6 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Nama",
-                                hintStyle: TextStyle(color: Colors.grey[700]),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Color.fromRGBO(0, 162, 232, 1),
-                                ),
-                              ),
-                            ),
-                            child: TextField(
-                              controller: sk,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "SK",
-                                hintStyle: TextStyle(color: Colors.grey[700]),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Color.fromRGBO(0, 162, 232, 1),
-                                ),
-                              ),
-                            ),
-                            child: TextField(
-                              controller: npwp,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "NPWP",
                                 hintStyle: TextStyle(color: Colors.grey[700]),
                               ),
                             ),
@@ -240,17 +211,6 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                               ),
                             ),
                             child: TextField(
-                              controller: kota,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Kota",
-                                hintStyle: TextStyle(color: Colors.grey[700]),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(8.0),
-                            child: TextField(
                               controller: kodePos,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -258,6 +218,18 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
                                 hintStyle: TextStyle(
                                   color: Colors.grey[700],
                                 ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(8.0),
+                            child: TextField(
+                              controller: email,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Email Verifikasi",
+                                hintStyle: TextStyle(color: Colors.grey[700]),
                               ),
                             ),
                           ),
@@ -338,10 +310,6 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
       "passwordConfirm": pass.text,
       "nama": nama.text,
       "nomor_hp": noHp.text,
-      "npwp": npwp.text,
-      "sk": sk.text,
-      "alamat": alamat.text,
-      "kota": kota.text,
       "kode_pos": kodePos.text,
       "is_member": true
     };

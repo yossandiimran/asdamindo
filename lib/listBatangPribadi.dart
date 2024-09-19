@@ -21,7 +21,11 @@ class _ProductListScreenState extends State<ProductListScreen> {
   }
 
   Future<void> getFullList() async {
-    await pb.collection('produk').getFullList(filter: "id_user = '${preference.getData("id")}'").then((value) {
+    var filter = "";
+    if (preference.getData("is_member") == "true") {
+      filter = "id_user = '${preference.getData("id")}'";
+    }
+    await pb.collection('view_produk_join_user').getFullList(filter: filter).then((value) {
       products = jsonDecode(value.toString());
       setState(() {});
     }).catchError((err) {
@@ -64,14 +68,19 @@ class _ProductListScreenState extends State<ProductListScreen> {
         ),
         automaticallyImplyLeading: false,
         leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_ios, color: defWhite)),
-        title: Text('Daftar Produk Anda', style: global.styleText5(global.getWidth(context) / 18, defWhite)),
+        title: Text('Daftar Produk', style: global.styleText5(global.getWidth(context) / 18, defWhite)),
         centerTitle: true,
         backgroundColor: Color.fromRGBO(0, 162, 232, 1),
       ),
       body: ListView(
-        children: [SizedBox(height: 10), for (var i = 0; i < products.length; i++) getChildList(products[i])],
+        children: [
+          SizedBox(height: 10),
+          for (var i = 0; i < products.length; i++) getChildList(products[i]),
+          SizedBox(height: kToolbarHeight * 2)
+        ],
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: defBlue,
         onPressed: _navigateToAddProductScreen,
         child: Icon(Icons.add_circle_outline_rounded, color: defWhite),
       ),
@@ -81,7 +90,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
   Widget getChildList(product) {
     Widget widget = Container(
       decoration: global.decCont2(defWhite, 10, 10, 10, 10),
-      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      margin: EdgeInsets.symmetric(vertical: 3, horizontal: 15),
       child: ListTile(
         leading: product["foto_produk"] != []
             ? Image.network(
@@ -93,8 +102,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
             : Icon(Icons.image, size: 50),
         title: Text(product["nama_produk"]),
         subtitle: Text(
-          '${global.formatRupiah(double.parse(product["harga"]))} - ${product["keterangan"]}',
+          '${global.formatRupiah(double.parse(product["harga"]))}\nOwner : ${product["owner"]}',
         ),
+        trailing: IconButton(onPressed: () {}, icon: Icon(Icons.delete, color: defRed)),
       ),
     );
     return widget;

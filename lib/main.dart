@@ -53,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   TextEditingController user = TextEditingController(text: "");
   TextEditingController pass = TextEditingController(text: "");
+  bool isObsecure = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,8 +140,16 @@ class _MyHomePageState extends State<MyHomePage> {
                             padding: EdgeInsets.all(8.0),
                             child: TextField(
                               controller: pass,
-                              obscureText: true,
+                              obscureText: isObsecure,
                               decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isObsecure = isObsecure ? false : true;
+                                    });
+                                  },
+                                  icon: Icon(isObsecure ? Icons.visibility : Icons.visibility_off),
+                                ),
                                 border: InputBorder.none,
                                 hintText: "Password",
                                 hintStyle: TextStyle(
