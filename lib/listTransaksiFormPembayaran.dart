@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, no_logic_in_create_state
+// ignore_for_file: prefer_typing_uninitialized_variables, no_logic_in_create_state, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
 import 'dart:io';
@@ -101,11 +101,26 @@ class _ListTransaksiFormPembayaranState extends State<ListTransaksiFormPembayara
                 //   ),
                 // ),
                 Card(
-                  child: ListTile(
-                    title: Text("Jumlah yang harus dibayar"),
-                    subtitle: Text(global.formatRupiah(grandTotal.toDouble())),
-                  ),
-                ),
+                    child: Column(
+                  children: [
+                    Container(
+                      child: ListTile(
+                        subtitle: Text(
+                          "Belanja : " +
+                              global.formatRupiah(grandTotal.toDouble()) +
+                              "\nBiaya Penanganan (10%) : " +
+                              global.formatRupiah(grandTotal.toDouble() * 0.10),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: ListTile(
+                        title: Text("Total Yang Harus Dibayar"),
+                        subtitle: Text(global.formatRupiah(grandTotal.toDouble() + (grandTotal.toDouble() * 0.10))),
+                      ),
+                    ),
+                  ],
+                )),
                 SizedBox(height: 16.0),
                 Row(
                   children: <Widget>[

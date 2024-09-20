@@ -104,7 +104,7 @@ class KeranjangState extends State<Keranjang> {
                             leading: SizedBox(
                               width: 60,
                               child: Image.network(
-                                "${global.baseIp}/api/files/${listCart[i]["collectionId"]}/${listCart[i]["id"]}/${listCart[i]["foto_produk"][0]}",
+                                "${global.baseIp}/api/files/${listCart[i]["collectionId"]}/${listCart[i]["id"]}/${listCart[i]["foto_produk"]}",
                               ),
                             ),
                             title: Text(listCart[i]["nama_produk"], style: global.styleText4(13)),
@@ -112,11 +112,17 @@ class KeranjangState extends State<Keranjang> {
                               children: [
                                 Text("${listCart[i]["qty"]}", style: global.styleText5(13, defGrey)),
                                 Text(" x ", style: global.styleText5(13, defGrey)),
-                                Text(listCart[i]["harga"], style: global.styleText5(13, defGrey)),
+                                Text(
+                                  global.formatRupiah(double.parse(listCart[i]["harga"])),
+                                  style: global.styleText5(13, defGrey),
+                                ),
                                 Spacer(),
                                 Text(
                                   global.formatRupiah(double.parse(listCart[i]["harga"]) * listCart[i]["qty"]),
-                                  style: global.styleText5(13, defBlack1),
+                                  style: global.styleText5(
+                                    13,
+                                    defBlack1,
+                                  ),
                                 ),
                               ],
                             ),
@@ -126,21 +132,35 @@ class KeranjangState extends State<Keranjang> {
                     ),
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 0),
                     decoration: global.decCont(defWhite, 10, 10, 0, 0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 20),
+                        Text(
+                          "*) Swipe barang untuk menghapus",
+                          style: TextStyle(fontStyle: FontStyle.italic, color: defRed, fontSize: 11),
+                        ),
                         Row(
                           children: [
                             Text(
-                              "*) Swipe barang untuk menghapus",
-                              style: TextStyle(fontStyle: FontStyle.italic, color: defRed, fontSize: 11),
+                              "Biaya Penanganan (10%)",
+                              style: TextStyle(fontStyle: FontStyle.italic, color: defBlack1, fontSize: 13),
                             ),
                             Spacer(),
-                            Text("Total Harga", style: TextStyle(fontStyle: FontStyle.italic)),
+                            Text(
+                              global.formatRupiah(grandTotal.toDouble() * 0.10).toString(),
+                              style: global.styleText5(13, defBlack1),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Spacer(),
+                            Text("Grand Total", style: TextStyle(fontStyle: FontStyle.italic)),
                           ],
                         ),
                         Divider(thickness: 3),
@@ -148,7 +168,7 @@ class KeranjangState extends State<Keranjang> {
                           children: [
                             Spacer(),
                             Text(
-                              global.formatRupiah(grandTotal.toDouble()).toString(),
+                              global.formatRupiah(grandTotal.toDouble() + (grandTotal.toDouble() * 0.10)).toString(),
                               style: global.styleText5(14, defBlack1),
                             ),
                           ],
@@ -205,13 +225,13 @@ class KeranjangState extends State<Keranjang> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () {
-                                global.alertConfirmation(
-                                  context: context,
-                                  action: orderAction,
-                                  message: "Apakah anda yakin?",
-                                );
-                              },
+                              onTap: orderAction,
+                              // global.alertConfirmation(
+                              //   context: context,
+                              //   action: orderAction,
+                              //   message: "Apakah anda yakin?",
+                              // );
+                              // },
                               child: Container(
                                 width: global.getWidth(context) / 3,
                                 padding: EdgeInsets.all(5),
@@ -243,7 +263,6 @@ class KeranjangState extends State<Keranjang> {
   }
 
   Future<void> orderAction() async {
-    Navigator.pop(context);
     global.loadingAlert(context, "Mohon tunggu ... ", false);
     pb.collection('transaksi').create(
       body: {

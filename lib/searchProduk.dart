@@ -91,7 +91,7 @@ class _SearchProdukState extends State<SearchProduk> {
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                           image: DecorationImage(
                             image: NetworkImage(
-                              "${global.baseIp}/api/files/${element["collectionId"]}/${element["id"]}/${element["foto_produk"][0]}",
+                              "${global.baseIp}/api/files/${element["collectionId"]}/${element["id"]}/${element["foto_produk"]}",
                             ),
                             fit: BoxFit.cover,
                           ),

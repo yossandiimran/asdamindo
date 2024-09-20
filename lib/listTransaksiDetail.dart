@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, no_logic_in_create_state
+// ignore_for_file: prefer_typing_uninitialized_variables, no_logic_in_create_state, prefer_interpolation_to_compose_strings
 
 import 'dart:convert';
 import 'package:asdamindo/helper/global.dart';
@@ -91,16 +91,27 @@ class _ListTransaksiDetailState extends State<ListTransaksiDetail> {
                           subtitle: Text(descriptionController),
                         ),
                       ),
+                      // Container(
+                      //   child: ListTile(
+                      //     title: Text("Note"),
+                      //     subtitle: Text(noteController),
+                      //   ),
+                      // ),
                       Container(
                         child: ListTile(
-                          title: Text("Note"),
-                          subtitle: Text(noteController),
+                          title: Text("Belanja"),
+                          subtitle: Text(
+                            "Total : " +
+                                global.formatRupiah(grandTotal.toDouble()) +
+                                "\nBiaya Penanganan (10%) : " +
+                                global.formatRupiah(grandTotal.toDouble() * 0.10),
+                          ),
                         ),
                       ),
                       Container(
                         child: ListTile(
-                          title: Text("Total Belanja"),
-                          subtitle: Text(global.formatRupiah(grandTotal.toDouble())),
+                          title: Text("Total Belanja + Biaya Penanganan"),
+                          subtitle: Text(global.formatRupiah(grandTotal.toDouble() + (grandTotal.toDouble() * 0.10))),
                         ),
                       ),
                     ],
@@ -117,7 +128,7 @@ class _ListTransaksiDetailState extends State<ListTransaksiDetail> {
                       leading: SizedBox(
                         width: 60,
                         child: Image.network(
-                          "${global.baseIp}/api/files/${listOrderDetail[i]["collectionId"]}/${listOrderDetail[i]["id"]}/${listOrderDetail[i]["foto_produk"][0]}",
+                          "${global.baseIp}/api/files/${listOrderDetail[i]["collectionId"]}/${listOrderDetail[i]["id"]}/${listOrderDetail[i]["foto_produk"]}",
                         ),
                       ),
                       title: Text(listOrderDetail[i]["nama_produk"], style: global.styleText4(13)),

@@ -112,7 +112,7 @@ class DetailBarangState extends State<DetailBarang> {
                 width: global.getWidth(context),
                 decoration: global.decCont2(Colors.transparent, 25, 25, 25, 25),
                 child: Image.network(
-                  "${global.baseIp}/api/files/${widget.obj["collectionId"]}/${widget.obj["id"]}/${widget.obj["foto_produk"][0]}",
+                  "${global.baseIp}/api/files/${widget.obj["collectionId"]}/${widget.obj["id"]}/${widget.obj["foto_produk"]}",
                 ),
               ),
             ],
@@ -214,7 +214,7 @@ class DetailBarangState extends State<DetailBarang> {
                       ListTile(
                         visualDensity: VisualDensity(vertical: -4),
                         subtitle: Text(
-                          'Seller : ' + widget.obj["owner"],
+                          'Seller : ' + widget.obj["owner"] + '\nAlamat Seller : ' + widget.obj["alamat"],
                           style: global.styleText4(15),
                         ),
                       ),

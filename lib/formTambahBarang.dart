@@ -1,3 +1,5 @@
+// ignore_for_file:
+
 import 'dart:io';
 import 'package:asdamindo/helper/global.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +8,10 @@ import 'package:http/http.dart' as http;
 import 'package:pocketbase/pocketbase.dart';
 
 class ProductForm extends StatefulWidget {
-  const ProductForm({super.key});
+  final product;
+  const ProductForm({super.key, required this.product});
   @override
-  _ProductFormState createState() => _ProductFormState();
+  _ProductFormState createState() => _ProductFormState(product);
 }
 
 class _ProductFormState extends State<ProductForm> {
@@ -19,6 +22,23 @@ class _ProductFormState extends State<ProductForm> {
   XFile? imageFile;
 
   final ImagePicker _picker = ImagePicker();
+
+  final product;
+  _ProductFormState(this.product);
+
+  @override
+  void initState() {
+    getInit();
+    super.initState();
+  }
+
+  getInit() async {
+    if (product != null) {
+      nameController.text = product["nama_produk"];
+      priceController.text = product["harga"];
+      descriptionController.text = product["keterangan"];
+    }
+  }
 
   void _pickImage() async {
     final pickedImage = await _picker.pickImage(source: ImageSource.gallery);
@@ -31,7 +51,7 @@ class _ProductFormState extends State<ProductForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Input Barang'),
+        title: Text(product == null ? 'Input Produk' : "Edit Produk"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -76,7 +96,14 @@ class _ProductFormState extends State<ProductForm> {
               Row(
                 children: <Widget>[
                   imageFile == null
-                      ? Text('Belum ada foto')
+                      ? product != null
+                          ? Image.network(
+                              "${global.baseIp}/api/files/${product["collectionId"]}/${product["id"]}/${product["foto_produk"]}",
+                              width: 200,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            )
+                          : Text('Belum ada foto')
                       : Image.file(
                           File(imageFile!.path),
                           width: 100,
@@ -102,7 +129,7 @@ class _ProductFormState extends State<ProductForm> {
                       processFormCreate();
                     }
                   },
-                  child: Text('Kirim'),
+                  child: Text(product == null ? 'Kirim' : 'update'),
                 ),
               ),
             ],
@@ -113,37 +140,80 @@ class _ProductFormState extends State<ProductForm> {
   }
 
   Future<void> processFormCreate() async {
-    print(imageFile!.path);
-    pb.collection('produk').create(
-      body: {
-        'id_user': preference.getData("id"),
-        'nama_produk': nameController.text,
-        'harga': priceController.text,
-        'keterangan': descriptionController.text,
-        'status': false,
-      },
-      files: [
-        await http.MultipartFile.fromPath('foto_produk', imageFile!.path),
-      ],
-    ).then((record) {
-      Navigator.pop(context);
-      global.alertSuccess(context, "Berhasil menambahkan produk");
-    }).catchError((err) {
-      print(err);
-      try {
-        ClientException error = err;
-        print(error);
+    if (product == null) {
+      print(imageFile!.path);
+      pb.collection('produk').create(
+        body: {
+          'id_user': preference.getData("id"),
+          'nama_produk': nameController.text,
+          'harga': priceController.text,
+          'keterangan': descriptionController.text,
+          'status': false,
+        },
+        files: [
+          await http.MultipartFile.fromPath('foto_produk', imageFile!.path),
+        ],
+      ).then((record) {
         Navigator.pop(context);
-        var dynamicData = error.response["data"];
-        for (var key in dynamicData.keys) {
-          var valueList = dynamicData[key]!;
-          return global.alertWarning(context, valueList["message"].toString());
+        global.alertSuccess(context, "Berhasil menambahkan produk");
+      }).catchError((err) {
+        print(err);
+        try {
+          ClientException error = err;
+          print(error);
+          Navigator.pop(context);
+          var dynamicData = error.response["data"];
+          for (var key in dynamicData.keys) {
+            var valueList = dynamicData[key]!;
+            return global.alertWarning(context, valueList["message"].toString());
+          }
+          return global.alertWarning(context, "Username / Email & Password salah");
+        } catch (err2) {
+          Navigator.pop(context);
+          print(err2);
         }
-        return global.alertWarning(context, "Username / Email & Password salah");
-      } catch (err2) {
+      });
+    } else {
+      pb.collection('produk').update(
+        product['id'],
+        body: {
+          'nama_produk': nameController.text,
+          'harga': priceController.text,
+          'keterangan': descriptionController.text,
+          'status': false,
+        },
+        files: [
+          imageFile != null
+              ? await http.MultipartFile.fromPath('foto_produk', imageFile!.path)
+              : http.MultipartFile.fromBytes(
+                  'foto_produk',
+                  (await http.get(Uri.parse(
+                    "${global.baseIp}/api/files/${product["collectionId"]}/${product["id"]}/${product["foto_produk"]}",
+                  )))
+                      .bodyBytes,
+                  filename: "existing_file.jpg",
+                ),
+        ],
+      ).then((record) {
         Navigator.pop(context);
-        print(err2);
-      }
-    });
+        global.alertSuccess(context, "Berhasil Mengupdate produk");
+      }).catchError((err) {
+        print(err);
+        try {
+          ClientException error = err;
+          print(error);
+          Navigator.pop(context);
+          var dynamicData = error.response["data"];
+          for (var key in dynamicData.keys) {
+            var valueList = dynamicData[key]!;
+            return global.alertWarning(context, valueList["message"].toString());
+          }
+          return global.alertWarning(context, "Username / Email & Password salah");
+        } catch (err2) {
+          Navigator.pop(context);
+          print(err2);
+        }
+      });
+    }
   }
 }

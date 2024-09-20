@@ -50,7 +50,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
     await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ProductForm(),
+        builder: (context) => ProductForm(product: null),
       ),
     ).then((value) {
       setState(() {});
@@ -92,19 +92,64 @@ class _ProductListScreenState extends State<ProductListScreen> {
       decoration: global.decCont2(defWhite, 10, 10, 10, 10),
       margin: EdgeInsets.symmetric(vertical: 3, horizontal: 15),
       child: ListTile(
-        leading: product["foto_produk"] != []
-            ? Image.network(
-                "${global.baseIp}/api/files/${product["collectionId"]}/${product["id"]}/${product["foto_produk"][0]}",
-                width: 50,
-                height: 50,
-                fit: BoxFit.cover,
-              )
-            : Icon(Icons.image, size: 50),
+        leading: GestureDetector(
+          onTap: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProductForm(product: product),
+              ),
+            ).then((value) {
+              getFullList();
+              setState(() {});
+            });
+          },
+          child: product["foto_produk"] != []
+              ? Image.network(
+                  "${global.baseIp}/api/files/${product["collectionId"]}/${product["id"]}/${product["foto_produk"]}",
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
+                )
+              : Icon(Icons.image, size: 50),
+        ),
         title: Text(product["nama_produk"]),
         subtitle: Text(
-          '${global.formatRupiah(double.parse(product["harga"]))}\nOwner : ${product["owner"]}',
+          '${global.formatRupiah(double.parse(product["harga"]))}\nSeller : ${product["owner"]}',
         ),
-        trailing: IconButton(onPressed: () {}, icon: Icon(Icons.delete, color: defRed)),
+        trailing: IconButton(
+            onPressed: () {
+              global.alertConfirmation(
+                context: context,
+                action: () async {
+                  global.loadingAlert(context, "Menghapus Produk", true);
+                  await pb.collection('produk').delete(product["id"]).then((value) {
+                    getFullList();
+                    setState(() {});
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    global.alertSuccess(context, "Berhasil Menghapus Produk");
+                  }).catchError((err) {
+                    try {
+                      ClientException error = err;
+                      print(error);
+                      Navigator.pop(context);
+                      var dynamicData = error.response["data"];
+                      for (var key in dynamicData.keys) {
+                        var valueList = dynamicData[key]!;
+                        return global.alertWarning(context, valueList["message"].toString());
+                      }
+                      return global.alertWarning(context, "Data kosong !");
+                    } catch (err2) {
+                      Navigator.pop(context);
+                      print(err2);
+                    }
+                  });
+                },
+                message: "Hapus Produk ?",
+              );
+            },
+            icon: Icon(Icons.delete, color: defRed)),
       ),
     );
     return widget;
