@@ -2,20 +2,19 @@ import 'dart:convert';
 
 import 'package:asdamindo/detailProduk.dart';
 import 'package:asdamindo/helper/global.dart';
-import 'package:asdamindo/homeWidgetKat.dart';
-import 'package:asdamindo/homeWidgetLegal.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
-class HomeWidget extends StatefulWidget {
-  const HomeWidget({super.key, required this.title});
+class HomeWidgetKat extends StatefulWidget {
+  const HomeWidgetKat({super.key, required this.title});
   final String title;
   @override
-  State<HomeWidget> createState() => _HomeWidgetState();
+  State<HomeWidgetKat> createState() => _HomeWidgetKatState();
 }
 
-class _HomeWidgetState extends State<HomeWidget> {
+class _HomeWidgetKatState extends State<HomeWidgetKat> {
+  Color bgColor = Color.fromRGBO(0, 162, 232, 1);
+  TextEditingController searchKey = TextEditingController();
   List products = [];
   @override
   void initState() {
@@ -24,7 +23,12 @@ class _HomeWidgetState extends State<HomeWidget> {
   }
 
   Future<void> getListProduct() async {
-    await pb.collection('view_produk_join_user').getFullList().then((value) {
+    await pb
+        .collection('view_produk_asdamindo')
+        .getFullList(
+            filter:
+                'nama_produk ~ "${searchKey.text}" && kategori = "${widget.title == 'Air Minum' ? '1' : '2'}" ')
+        .then((value) {
       products = jsonDecode(value.toString());
       setState(() {});
     }).catchError((err) {
@@ -49,33 +53,20 @@ class _HomeWidgetState extends State<HomeWidget> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.blueGrey.shade50,
-        floatingActionButton: GestureDetector(
-          onTap: () async {
-            var text = '';
-            final encodedText = Uri.encodeComponent(text);
-            final url = 'https://wa.me/6282295246660?text=${encodedText}';
-            await launchUrlString(
-              url,
-              mode: LaunchMode.externalApplication,
-            );
-          },
-          child: Container(
-            width: global.getWidth(context) / 2.5,
-            padding: EdgeInsets.all(15),
-            decoration: global.decCont2(defGreen, 10, 10, 10, 10),
-            child: Row(
-              children: [
-                Spacer(),
-                Icon(Icons.message, color: defWhite, size: 12),
-                Spacer(),
-                Text("Hubungi Via Whatsapp",
-                    style: global.styleText5(12, defWhite)),
-                Spacer(),
-              ],
+        appBar: AppBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(20.0),
             ),
           ),
+          automaticallyImplyLeading: false,
+          backgroundColor: bgColor,
+          centerTitle: true,
+          title: Text(widget.title,
+              style:
+                  global.styleText5(global.getWidth(context) / 20, defWhite)),
         ),
+        backgroundColor: Colors.blueGrey.shade50,
         body: Container(
           padding: EdgeInsets.all(10),
           height: global.getHeight(context),
@@ -83,85 +74,19 @@ class _HomeWidgetState extends State<HomeWidget> {
             child: Column(
               children: [
                 SizedBox(height: 10),
-                // Container(
-                //   width: global.getWidth(context),
-                //   padding: EdgeInsets.all(20),
-                //   margin: EdgeInsets.symmetric(horizontal: 8),
-                //   decoration: global.decCont(defWhite, 20, 20, 20, 20),
-                //   child: Row(
-                //     children: [
-                //       Text("Cari Produk..."),
-                //       Spacer(),
-                //       Icon(Icons.search_rounded),
-                //     ],
-                //   ),
-                // ),
-                SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return HomeWidgetKat(title: "Air Minum");
-                          }));
-                        },
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 8),
-                          width: global.getWidth(context) * 0.35,
-                          decoration: global.decCont(defWhite, 10, 10, 10, 10),
-                          child: Column(
-                            children: [
-                              Icon(Icons.water, color: defBlue),
-                              Text("Air Minum"),
-                            ],
-                          ),
-                          padding: EdgeInsets.all(30),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return HomeWidgetKat(title: "Air Gunung");
-                          }));
-                        },
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 8),
-                          width: global.getWidth(context) * 0.35,
-                          decoration: global.decCont(defWhite, 10, 10, 10, 10),
-                          child: Column(
-                            children: [
-                              Icon(Icons.water_drop_rounded, color: defBlue),
-                              Text("Air Gunung"),
-                            ],
-                          ),
-                          padding: EdgeInsets.all(30),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return HomeWidgetLegal();
-                          }));
-                        },
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 8),
-                          width: global.getWidth(context) * 0.35,
-                          decoration: global.decCont(defWhite, 10, 10, 10, 10),
-                          child: Column(
-                            children: [
-                              Icon(Icons.verified_user_rounded, color: defBlue),
-                              Text("Legalitas"),
-                            ],
-                          ),
-                          padding: EdgeInsets.all(30),
-                        ),
-                      )
-                    ],
+                Container(
+                  width: global.getWidth(context),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  decoration: global.decCont(defWhite, 20, 20, 20, 20),
+                  child: TextField(
+                    controller: searchKey,
+                    onChanged: (val) {
+                      getListProduct();
+                    },
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      suffixIcon: Icon(Icons.search, color: defBlack1),
+                    ),
                   ),
                 ),
                 SizedBox(height: 10),
@@ -250,7 +175,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                     );
                   }).toList(),
                 ),
-                SizedBox(height: kToolbarHeight),
               ],
             ),
           ),

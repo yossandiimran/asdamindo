@@ -40,7 +40,8 @@ class KeranjangState extends State<Keranjang> {
   countTotal() {
     grandTotal = 0;
     for (var i = 0; i < listCart.length; i++) {
-      grandTotal = grandTotal + (int.parse(listCart[i]["harga"]) * listCart[i]["qty"]);
+      grandTotal =
+          grandTotal + (int.parse(listCart[i]["harga"]) * listCart[i]["qty"]);
     }
     setState(() {});
   }
@@ -82,13 +83,16 @@ class KeranjangState extends State<Keranjang> {
                     Dismissible(
                       key: Key(listCart[i]['id']),
                       onDismissed: (direction) {
-                        grandTotal = grandTotal - (double.parse(listCart[i]["harga"]) * listCart[i]["qty"]);
+                        grandTotal = grandTotal -
+                            (double.parse(listCart[i]["harga"]) *
+                                listCart[i]["qty"]);
                         global.addToCart(listCart[i], context, 0);
                         setState(() => listCart.removeAt(i));
                       },
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
                             return DetailBarang(obj: listCart[i]);
                           })).then(
                             (value) {
@@ -98,7 +102,8 @@ class KeranjangState extends State<Keranjang> {
                           );
                         },
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                           decoration: global.decCont(defWhite, 0, 0, 0, 0),
                           child: ListTile(
                             leading: SizedBox(
@@ -107,18 +112,24 @@ class KeranjangState extends State<Keranjang> {
                                 "${global.baseIp}/api/files/${listCart[i]["collectionId"]}/${listCart[i]["id"]}/${listCart[i]["foto_produk"]}",
                               ),
                             ),
-                            title: Text(listCart[i]["nama_produk"], style: global.styleText4(13)),
+                            title: Text(listCart[i]["nama_produk"],
+                                style: global.styleText4(13)),
                             subtitle: Row(
                               children: [
-                                Text("${listCart[i]["qty"]}", style: global.styleText5(13, defGrey)),
-                                Text(" x ", style: global.styleText5(13, defGrey)),
+                                Text("${listCart[i]["qty"]}",
+                                    style: global.styleText5(13, defGrey)),
+                                Text(" x ",
+                                    style: global.styleText5(13, defGrey)),
                                 Text(
-                                  global.formatRupiah(double.parse(listCart[i]["harga"])),
+                                  global.formatRupiah(
+                                      double.parse(listCart[i]["harga"])),
                                   style: global.styleText5(13, defGrey),
                                 ),
                                 Spacer(),
                                 Text(
-                                  global.formatRupiah(double.parse(listCart[i]["harga"]) * listCart[i]["qty"]),
+                                  global.formatRupiah(
+                                      double.parse(listCart[i]["harga"]) *
+                                          listCart[i]["qty"]),
                                   style: global.styleText5(
                                     13,
                                     defBlack1,
@@ -141,17 +152,25 @@ class KeranjangState extends State<Keranjang> {
                         SizedBox(height: 20),
                         Text(
                           "*) Swipe barang untuk menghapus",
-                          style: TextStyle(fontStyle: FontStyle.italic, color: defRed, fontSize: 11),
+                          style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: defRed,
+                              fontSize: 11),
                         ),
                         Row(
                           children: [
                             Text(
                               "Biaya Penanganan (10%)",
-                              style: TextStyle(fontStyle: FontStyle.italic, color: defBlack1, fontSize: 13),
+                              style: TextStyle(
+                                  fontStyle: FontStyle.italic,
+                                  color: defBlack1,
+                                  fontSize: 13),
                             ),
                             Spacer(),
                             Text(
-                              global.formatRupiah(grandTotal.toDouble() * 0.10).toString(),
+                              global
+                                  .formatRupiah(grandTotal.toDouble() * 0.10)
+                                  .toString(),
                               style: global.styleText5(13, defBlack1),
                             ),
                           ],
@@ -160,7 +179,8 @@ class KeranjangState extends State<Keranjang> {
                         Row(
                           children: [
                             Spacer(),
-                            Text("Grand Total", style: TextStyle(fontStyle: FontStyle.italic)),
+                            Text("Grand Total",
+                                style: TextStyle(fontStyle: FontStyle.italic)),
                           ],
                         ),
                         Divider(thickness: 3),
@@ -168,10 +188,21 @@ class KeranjangState extends State<Keranjang> {
                           children: [
                             Spacer(),
                             Text(
-                              global.formatRupiah(grandTotal.toDouble() + (grandTotal.toDouble() * 0.10)).toString(),
+                              global
+                                  .formatRupiah(grandTotal.toDouble() +
+                                      (grandTotal.toDouble() * 0.10))
+                                  .toString(),
                               style: global.styleText5(14, defBlack1),
                             ),
                           ],
+                        ),
+                        Text(
+                          "Pembayaran harap melalui no rek\nBCA 639-573-5184\na/n. Erik Garnadi",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: defBlack1,
+                            fontSize: 12,
+                          ),
                         ),
                         // Row(
                         //   children: [
@@ -189,7 +220,9 @@ class KeranjangState extends State<Keranjang> {
                             controller: ketController,
                             maxLines: 3,
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
                               hintText: 'Keterangan',
                             ),
                           ),
@@ -205,20 +238,24 @@ class KeranjangState extends State<Keranjang> {
                                     action: () {
                                       preference.remove("cart");
                                       Navigator.pop(context);
-                                      global.alertSuccess(context, "Keranjang berhasil dihapus");
+                                      global.alertSuccess(context,
+                                          "Keranjang berhasil dihapus");
                                     },
-                                    message: "Hapus semua barang yang ada di keranjang ?");
+                                    message:
+                                        "Hapus semua barang yang ada di keranjang ?");
                               },
                               child: Container(
                                 width: global.getWidth(context) / 3,
                                 padding: EdgeInsets.all(5),
-                                decoration: global.decCont2(defRed, 10, 10, 10, 10),
+                                decoration:
+                                    global.decCont2(defRed, 10, 10, 10, 10),
                                 child: Row(
                                   children: [
                                     Spacer(),
                                     Icon(Icons.delete, color: defWhite),
                                     SizedBox(width: 10),
-                                    Text("Kosongkan", style: global.styleText5(12, defWhite)),
+                                    Text("Kosongkan",
+                                        style: global.styleText5(12, defWhite)),
                                     Spacer(),
                                   ],
                                 ),
@@ -235,13 +272,16 @@ class KeranjangState extends State<Keranjang> {
                               child: Container(
                                 width: global.getWidth(context) / 3,
                                 padding: EdgeInsets.all(5),
-                                decoration: global.decCont2(defGreen, 10, 10, 10, 10),
+                                decoration:
+                                    global.decCont2(defGreen, 10, 10, 10, 10),
                                 child: Row(
                                   children: [
                                     Spacer(),
-                                    Text("Checkout", style: global.styleText5(12, defWhite)),
+                                    Text("Checkout",
+                                        style: global.styleText5(12, defWhite)),
                                     SizedBox(width: 10),
-                                    Icon(Icons.shopping_cart_checkout_rounded, color: defWhite),
+                                    Icon(Icons.shopping_cart_checkout_rounded,
+                                        color: defWhite),
                                     Spacer(),
                                   ],
                                 ),
@@ -270,7 +310,8 @@ class KeranjangState extends State<Keranjang> {
         "id_user_penjual": listCart[0]["id_user"],
         "total_harga": grandTotal,
         "keterangan": ketController.text,
-        "catatan": "Order ke Seller : ${listCart.isNotEmpty ? listCart[0]["owner"] : "-"}",
+        "catatan":
+            "Order ke Seller : ${listCart.isNotEmpty ? listCart[0]["owner"] : "-"}",
         "alamat_pengiriman": preference.getData("alamat"),
         "status": "new"
       },
@@ -282,7 +323,8 @@ class KeranjangState extends State<Keranjang> {
           "id_barang": listCart[i]["id"],
           "qty": listCart[i]["qty"],
           "harga_satuan": listCart[i]["harga"],
-          "total_harga": (double.parse(listCart[i]["harga"]) * listCart[i]["qty"])
+          "total_harga":
+              (double.parse(listCart[i]["harga"]) * listCart[i]["qty"])
         });
       }
       Navigator.pop(context);
@@ -303,7 +345,8 @@ class KeranjangState extends State<Keranjang> {
           var valueList = dynamicData[key]!;
           return global.alertWarning(context, valueList["message"].toString());
         }
-        return global.alertWarning(context, "Username / Email & Password salah");
+        return global.alertWarning(
+            context, "Username / Email & Password salah");
       } catch (err2) {
         Navigator.pop(context);
         print(err2);

@@ -26,7 +26,7 @@ class ListTransaksiState extends State<ListTransaksi> {
 
   Future<void> getDashboardData() async {
     await pb
-        .collection('transaksi')
+        .collection('transaksi_join_user')
         .getFullList(filter: "id_user_pembeli = '${preference.getData("id")}'")
         .then((value) {
       listOrder = jsonDecode(value.toString());
@@ -88,8 +88,10 @@ class ListTransaksiState extends State<ListTransaksi> {
                     SizedBox(height: 10),
                     for (var i = 0; i < listOrder.length; i++)
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        margin:
+                            EdgeInsets.only(left: 10, right: 10, bottom: 10),
                         decoration: global.decCont(defWhite, 10, 10, 10, 10),
                         child: Column(children: [
                           Row(
@@ -106,7 +108,8 @@ class ListTransaksiState extends State<ListTransaksi> {
                           SizedBox(height: 3),
                           Row(
                             children: [
-                              Text("Tanggal", style: global.styleText5(12, defBlack1)),
+                              Text("Tanggal",
+                                  style: global.styleText5(12, defBlack1)),
                               Spacer(),
                               Text(
                                 listOrder[i]["created"].toString(),
@@ -126,7 +129,8 @@ class ListTransaksiState extends State<ListTransaksi> {
                           // ),
                           Row(
                             children: [
-                              Text("Keterangan", style: global.styleText5(12, defBlack1)),
+                              Text("Keterangan",
+                                  style: global.styleText5(12, defBlack1)),
                               Spacer(),
                               Text(
                                 listOrder[i]["keterangan"],
@@ -139,52 +143,83 @@ class ListTransaksiState extends State<ListTransaksi> {
                               listOrder[i]["status"] == 'verification'
                                   ? GestureDetector(
                                       onTap: () async {
+                                        var text = '''
+=============≈===========
+No. INV: ${listOrder[i]["id"]}
+HARGA: ${global.formatRupiah(int.parse(listOrder[i]["total_harga"]) + (int.parse(listOrder[i]["total_harga"]) * 0.10))}
+BIAYA (10%): ${global.formatRupiah((int.parse(listOrder[i]["total_harga"]) * 0.10))}
+TOTAL: ${global.formatRupiah(int.parse(listOrder[i]["total_harga"]) + (int.parse(listOrder[i]["total_harga"]) * 0.10))}
+NAMA  : ${listOrder[i]["nama"]}
+ALAMAT : ${listOrder[i]["alamat"]}
+TELP : ${listOrder[i]["nomor_hp"]}
+*HARAP LAMPIRKAN GAMBAR BUKTI PEMBAYARAN*
+=========================
+''';
+                                        final encodedText =
+                                            Uri.encodeComponent(text);
                                         final url =
-                                            'https://wa.me/6281224580919?text=Konfirmasi Pesanan Mohon Di Proses';
+                                            'https://wa.me/6282295246660?text=${encodedText}';
                                         await launchUrlString(
                                           url,
                                           mode: LaunchMode.externalApplication,
                                         );
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.symmetric(vertical: 10),
-                                        decoration: global.decCont(defWhite, 10, 10, 10, 10),
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 10),
+                                        decoration: global.decCont(
+                                            defWhite, 10, 10, 10, 10),
                                         child: Row(
                                           children: [
-                                            Icon(Icons.arrow_back_ios_new, color: defPurple, size: 10),
-                                            Text("    Chat Admin", style: global.styleText5(12, defPurple)),
+                                            Icon(Icons.arrow_back_ios_new,
+                                                color: defPurple, size: 10),
+                                            Text("    Chat Admin",
+                                                style: global.styleText5(
+                                                    12, defPurple)),
                                           ],
                                         ),
                                       ),
                                     )
                                   : Container(),
-                              listOrder[i]["status"] == 'new' || listOrder[i]["status"] == "cancel"
+                              listOrder[i]["status"] == 'new' ||
+                                      listOrder[i]["status"] == "cancel"
                                   ? GestureDetector(
                                       onTap: () {
                                         Map objParam = {
                                           'id': listOrder[i]["id"],
-                                          "keterangan": listOrder[i]["keterangan"],
+                                          "keterangan": listOrder[i]
+                                              ["keterangan"],
                                           "catatan": listOrder[i]["catatan"],
                                           "info": listOrder[i],
                                         };
                                         // Navigator.pushNamed(context, '/listOrderDetail', arguments: objParam);
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                          return ListTransaksiFormPembayaran(objParam: objParam);
+                                        Navigator.push(context,
+                                            MaterialPageRoute(
+                                                builder: (context) {
+                                          return ListTransaksiFormPembayaran(
+                                              objParam: objParam);
                                         })).then((value) async {
                                           await getDashboardData();
                                           setState(() {});
                                         });
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.symmetric(vertical: 10),
-                                        decoration: global.decCont(defWhite, 10, 10, 10, 10),
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 10),
+                                        decoration: global.decCont(
+                                            defWhite, 10, 10, 10, 10),
                                         child: Row(
                                           children: [
-                                            Icon(Icons.arrow_back_ios_new, color: defBlue, size: 10),
+                                            Icon(Icons.arrow_back_ios_new,
+                                                color: defBlue, size: 10),
                                             listOrder[i]["status"] == "cancel"
-                                                ? Text("    Upload Ulang Bukti Bayar",
-                                                    style: global.styleText5(12, defBlue))
-                                                : Text("    Bayar", style: global.styleText5(12, defBlue)),
+                                                ? Text(
+                                                    "    Upload Ulang Bukti Bayar",
+                                                    style: global.styleText5(
+                                                        12, defBlue))
+                                                : Text("    Bayar",
+                                                    style: global.styleText5(
+                                                        12, defBlue)),
                                           ],
                                         ),
                                       ),
@@ -199,8 +234,10 @@ class ListTransaksiState extends State<ListTransaksi> {
                                     "catatan": listOrder[i]["catatan"],
                                     "info": listOrder[i],
                                   };
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                    return ListTransaksiDetail(objParam: objParam);
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return ListTransaksiDetail(
+                                        objParam: objParam);
                                   })).then((value) async {
                                     await getDashboardData();
                                     setState(() {});
@@ -208,11 +245,15 @@ class ListTransaksiState extends State<ListTransaksi> {
                                 },
                                 child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 10),
-                                  decoration: global.decCont(defWhite, 10, 10, 10, 10),
+                                  decoration:
+                                      global.decCont(defWhite, 10, 10, 10, 10),
                                   child: Row(
                                     children: [
-                                      Text("Detail    ", style: global.styleText5(12, defOrange)),
-                                      Icon(Icons.arrow_forward_ios_rounded, color: defOrange, size: 10),
+                                      Text("Detail    ",
+                                          style:
+                                              global.styleText5(12, defOrange)),
+                                      Icon(Icons.arrow_forward_ios_rounded,
+                                          color: defOrange, size: 10),
                                     ],
                                   ),
                                 ),
@@ -233,23 +274,38 @@ class ListTransaksiState extends State<ListTransaksi> {
 
   Icon getIconStatus(data) {
     Icon icon = Icon(Icons.access_time_rounded, color: defOrange, size: 14);
-    if (data["status"] == "new") return Icon(Icons.access_time_rounded, color: defPurple, size: 14);
-    if (data["status"] == "verification") return Icon(Icons.verified_rounded, color: defOrange, size: 14);
-    if (data["status"] == "cancel") return Icon(Icons.cancel_outlined, color: defRed, size: 14);
-    if (data["status"] == "pay") return Icon(Icons.payment, color: defGreen, size: 14);
-    if (data["status"] == "deliver") return Icon(Icons.local_shipping_rounded, color: defOrange, size: 14);
-    if (data["status"] == "succes") return Icon(Icons.check_circle_outline_rounded, color: defGreen, size: 14);
+    if (data["status"] == "new")
+      return Icon(Icons.access_time_rounded, color: defPurple, size: 14);
+    if (data["status"] == "verification")
+      return Icon(Icons.verified_rounded, color: defOrange, size: 14);
+    if (data["status"] == "cancel")
+      return Icon(Icons.cancel_outlined, color: defRed, size: 14);
+    if (data["status"] == "pay")
+      return Icon(Icons.payment, color: defGreen, size: 14);
+    if (data["status"] == "deliver")
+      return Icon(Icons.local_shipping_rounded, color: defOrange, size: 14);
+    if (data["status"] == "succes")
+      return Icon(Icons.check_circle_outline_rounded,
+          color: defGreen, size: 14);
     return icon;
   }
 
   Text gettextStatus(data) {
     Text text = Text("  Menunggu", style: global.styleText6(14, defOrange));
-    if (data["status"] == "new") return Text("  Menunggu Pembayaran", style: global.styleText6(14, defPurple));
-    if (data["status"] == "verification") return Text("  Proses Verifikasi", style: global.styleText6(14, defOrange));
-    if (data["status"] == "cancel") return Text("  Gagal / Dibatalkan", style: global.styleText6(14, defRed));
-    if (data["status"] == "pay") return Text("  Dibayar", style: global.styleText6(14, defGreen));
-    if (data["status"] == "deliver") return Text("  Pengiriman", style: global.styleText6(14, defOrange));
-    if (data["status"] == "succes") return Text("  Selesai", style: global.styleText6(14, defGreen));
+    if (data["status"] == "new")
+      return Text("  Menunggu Pembayaran",
+          style: global.styleText6(14, defPurple));
+    if (data["status"] == "verification")
+      return Text("  Proses Verifikasi",
+          style: global.styleText6(14, defOrange));
+    if (data["status"] == "cancel")
+      return Text("  Gagal / Dibatalkan", style: global.styleText6(14, defRed));
+    if (data["status"] == "pay")
+      return Text("  Dibayar", style: global.styleText6(14, defGreen));
+    if (data["status"] == "deliver")
+      return Text("  Pengiriman", style: global.styleText6(14, defOrange));
+    if (data["status"] == "succes")
+      return Text("  Selesai", style: global.styleText6(14, defGreen));
     return text;
   }
 }

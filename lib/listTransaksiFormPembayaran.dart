@@ -11,10 +11,12 @@ class ListTransaksiFormPembayaran extends StatefulWidget {
   final objParam;
   const ListTransaksiFormPembayaran({super.key, required this.objParam});
   @override
-  _ListTransaksiFormPembayaranState createState() => _ListTransaksiFormPembayaranState(objParam);
+  _ListTransaksiFormPembayaranState createState() =>
+      _ListTransaksiFormPembayaranState(objParam);
 }
 
-class _ListTransaksiFormPembayaranState extends State<ListTransaksiFormPembayaran> {
+class _ListTransaksiFormPembayaranState
+    extends State<ListTransaksiFormPembayaran> {
   final formKey = GlobalKey<FormState>();
   var nameController = "";
   var noteController = "";
@@ -36,12 +38,16 @@ class _ListTransaksiFormPembayaranState extends State<ListTransaksiFormPembayara
     nameController = objParam["id"];
     descriptionController = objParam["keterangan"];
     noteController = objParam["catatan"];
-    await pb.collection('transaksi_detail').getFullList(filter: "id_transaksi = '${objParam["id"]}'").then((value) {
+    await pb
+        .collection('transaksi_detail')
+        .getFullList(filter: "id_transaksi = '${objParam["id"]}'")
+        .then((value) {
       var listOrderDetail = jsonDecode(value.toString());
       grandTotal = 0;
       for (var i = 0; i < listOrderDetail.length; i++) {
-        grandTotal =
-            grandTotal + (int.parse(listOrderDetail[i]["harga_satuan"]) * int.parse(listOrderDetail[i]["qty"]));
+        grandTotal = grandTotal +
+            (int.parse(listOrderDetail[i]["harga_satuan"]) *
+                int.parse(listOrderDetail[i]["qty"]));
       }
       setState(() {});
       setState(() {});
@@ -116,7 +122,17 @@ class _ListTransaksiFormPembayaranState extends State<ListTransaksiFormPembayara
                     Container(
                       child: ListTile(
                         title: Text("Total Yang Harus Dibayar"),
-                        subtitle: Text(global.formatRupiah(grandTotal.toDouble() + (grandTotal.toDouble() * 0.10))),
+                        subtitle: Text(global.formatRupiah(
+                            grandTotal.toDouble() +
+                                (grandTotal.toDouble() * 0.10))),
+                      ),
+                    ),
+                    Text(
+                      "Pembayaran harap melalui no rek\nBCA 639-573-5184\na/n. Erik Garnadi",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: defBlack1,
+                        fontSize: 12,
                       ),
                     ),
                   ],

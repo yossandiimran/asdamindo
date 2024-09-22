@@ -1,20 +1,20 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, no_logic_in_create_state
 
 import 'dart:convert';
-import 'dart:io';
 import 'package:asdamindo/helper/global.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
 
 class ListAccPembelianFormPembayaran extends StatefulWidget {
   final objParam;
   const ListAccPembelianFormPembayaran({super.key, required this.objParam});
   @override
-  _ListAccPembelianFormPembayaranState createState() => _ListAccPembelianFormPembayaranState(objParam);
+  _ListAccPembelianFormPembayaranState createState() =>
+      _ListAccPembelianFormPembayaranState(objParam);
 }
 
-class _ListAccPembelianFormPembayaranState extends State<ListAccPembelianFormPembayaran> {
+class _ListAccPembelianFormPembayaranState
+    extends State<ListAccPembelianFormPembayaran> {
   final formKey = GlobalKey<FormState>();
   var nameController = "";
   var noteController = "";
@@ -36,12 +36,16 @@ class _ListAccPembelianFormPembayaranState extends State<ListAccPembelianFormPem
     nameController = objParam["id"];
     descriptionController = objParam["keterangan"];
     noteController = objParam["catatan"];
-    await pb.collection('transaksi_detail').getFullList(filter: "id_transaksi = '${objParam["id"]}'").then((value) {
+    await pb
+        .collection('transaksi_detail')
+        .getFullList(filter: "id_transaksi = '${objParam["id"]}'")
+        .then((value) {
       var listOrderDetail = jsonDecode(value.toString());
       grandTotal = 0;
       for (var i = 0; i < listOrderDetail.length; i++) {
-        grandTotal =
-            grandTotal + (int.parse(listOrderDetail[i]["harga_satuan"]) * int.parse(listOrderDetail[i]["qty"]));
+        grandTotal = grandTotal +
+            (int.parse(listOrderDetail[i]["harga_satuan"]) *
+                int.parse(listOrderDetail[i]["qty"]));
       }
       setState(() {});
       setState(() {});
@@ -101,11 +105,28 @@ class _ListAccPembelianFormPembayaranState extends State<ListAccPembelianFormPem
                   ),
                 ),
                 Card(
-                  child: ListTile(
-                    title: Text("Jumlah yang harus dibayar"),
-                    subtitle: Text(global.formatRupiah(grandTotal.toDouble())),
-                  ),
-                ),
+                    child: Column(
+                  children: [
+                    Container(
+                      child: ListTile(
+                        subtitle: Text(
+                          "Belanja : " +
+                              global.formatRupiah(grandTotal.toDouble()) +
+                              "\nBiaya Penanganan (10%) : " +
+                              global.formatRupiah(grandTotal.toDouble() * 0.10),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: ListTile(
+                        title: Text("Total Yang Dibayarkan"),
+                        subtitle: Text(global.formatRupiah(
+                            grandTotal.toDouble() +
+                                (grandTotal.toDouble() * 0.10))),
+                      ),
+                    ),
+                  ],
+                )),
                 Container(
                   padding: EdgeInsets.all(10),
                   alignment: Alignment.center,
@@ -121,7 +142,8 @@ class _ListAccPembelianFormPembayaranState extends State<ListAccPembelianFormPem
                     Center(
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith((states) => Colors.green),
+                          backgroundColor: MaterialStateColor.resolveWith(
+                              (states) => Colors.green),
                         ),
                         onPressed: () {
                           global.alertConfirmation(
@@ -132,14 +154,16 @@ class _ListAccPembelianFormPembayaranState extends State<ListAccPembelianFormPem
                             message: "Yakin untuk Acc?",
                           );
                         },
-                        child: Text('  Acc  ', style: global.styleText5(14, defWhite)),
+                        child: Text('  Acc  ',
+                            style: global.styleText5(14, defWhite)),
                       ),
                     ),
                     SizedBox(width: 20),
                     Center(
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith((states) => Colors.red),
+                          backgroundColor: MaterialStateColor.resolveWith(
+                              (states) => Colors.red),
                         ),
                         onPressed: () {
                           global.alertConfirmation(
@@ -150,7 +174,8 @@ class _ListAccPembelianFormPembayaranState extends State<ListAccPembelianFormPem
                             message: "Tolak pembayaran?",
                           );
                         },
-                        child: Text('Tolak', style: global.styleText5(14, defWhite)),
+                        child: Text('Tolak',
+                            style: global.styleText5(14, defWhite)),
                       ),
                     ),
                     Spacer(),

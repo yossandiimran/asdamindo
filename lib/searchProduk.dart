@@ -23,7 +23,9 @@ class _SearchProdukState extends State<SearchProduk> {
   getListProduct() async {
     await pb
         .collection('view_produk_join_user')
-        .getFullList(filter: 'nama_produk ~ "${searchKey.text}" || owner ~ "${searchKey.text}"')
+        .getFullList(
+            filter:
+                'nama_produk ~ "${searchKey.text}" || owner ~ "${searchKey.text}"')
         .then((value) {
       products = jsonDecode(value.toString());
       setState(() {});
@@ -81,19 +83,21 @@ class _SearchProdukState extends State<SearchProduk> {
                   children: products.map((element) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
                           return DetailBarang(obj: element);
                         }));
                       },
                       child: Container(
-                        margin: EdgeInsets.all(10),
+                        margin: EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          color: defWhite,
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
                           image: DecorationImage(
                             image: NetworkImage(
                               "${global.baseIp}/api/files/${element["collectionId"]}/${element["id"]}/${element["foto_produk"]}",
                             ),
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
                           ),
                         ),
                         child: Stack(
@@ -104,27 +108,44 @@ class _SearchProdukState extends State<SearchProduk> {
                                   Spacer(),
                                   Container(
                                     padding: EdgeInsets.all(5),
-                                    decoration:
-                                        global.decCont(Color.fromRGBO(0, 162, 232, 1).withOpacity(0.8), 10, 10, 0, 0),
+                                    decoration: global.decCont(
+                                        defWhite,
+                                        // Color.fromRGBO(0, 162, 232, 1)
+                                        //     .withOpacity(0.8),
+                                        10,
+                                        10,
+                                        0,
+                                        0),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Text(
                                           element["nama_produk"]!,
-                                          style: global.styleText5(12, Colors.white),
+                                          style:
+                                              global.styleText5(12, defBlack1),
+                                          textAlign: TextAlign.start,
+                                        ),
+                                        Text(
+                                          element["owner"]!,
+                                          style:
+                                              global.styleText6(10, defBlack1),
                                           textAlign: TextAlign.start,
                                         ),
                                         Row(
                                           children: [
                                             Text(
-                                              global.formatRupiah(double.parse(element["harga"]!)),
-                                              style: global.styleText6(11, Colors.white),
+                                              global.formatRupiah(double.parse(
+                                                  element["harga"]!)),
+                                              style: global.styleText5(
+                                                  11, defBlue),
                                             ),
                                             Spacer(),
                                             Icon(
-                                              Icons.shopping_bag_rounded,
-                                              color: defWhite,
+                                              Icons.more_horiz,
+                                              color: defBlack1,
                                             )
                                           ],
                                         ),

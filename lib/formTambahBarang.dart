@@ -20,6 +20,7 @@ class _ProductFormState extends State<ProductForm> {
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
   XFile? imageFile;
+  String dropdownValue = 'Lainnya';
 
   final ImagePicker _picker = ImagePicker();
 
@@ -37,6 +38,11 @@ class _ProductFormState extends State<ProductForm> {
       nameController.text = product["nama_produk"];
       priceController.text = product["harga"];
       descriptionController.text = product["keterangan"];
+      dropdownValue = product["kategori"] == "1"
+          ? "Air Minum"
+          : product["kategori"] == "2"
+              ? "Air Gunung"
+              : "Lainnya";
     }
   }
 
@@ -90,6 +96,26 @@ class _ProductFormState extends State<ProductForm> {
                     return 'Keterangan tidak boleh kosong';
                   }
                   return null;
+                },
+              ),
+              DropdownButtonFormField<String>(
+                value: dropdownValue,
+                decoration: InputDecoration(
+                  labelText: 'Kategori',
+                  border: UnderlineInputBorder(),
+                ),
+                items: <String>['Air Minum', 'Air Gunung', 'Lainnya']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                // Callback when the selected item changes
+                onChanged: (String? newValue) {
+                  setState(() {
+                    dropdownValue = newValue!;
+                  });
                 },
               ),
               SizedBox(height: 16.0),
@@ -148,6 +174,11 @@ class _ProductFormState extends State<ProductForm> {
           'nama_produk': nameController.text,
           'harga': priceController.text,
           'keterangan': descriptionController.text,
+          'kategori': dropdownValue == "Air Minum"
+              ? "1"
+              : dropdownValue == "Air Gunung"
+                  ? "2"
+                  : "3",
           'status': false,
         },
         files: [
@@ -165,9 +196,11 @@ class _ProductFormState extends State<ProductForm> {
           var dynamicData = error.response["data"];
           for (var key in dynamicData.keys) {
             var valueList = dynamicData[key]!;
-            return global.alertWarning(context, valueList["message"].toString());
+            return global.alertWarning(
+                context, valueList["message"].toString());
           }
-          return global.alertWarning(context, "Username / Email & Password salah");
+          return global.alertWarning(
+              context, "Username / Email & Password salah");
         } catch (err2) {
           Navigator.pop(context);
           print(err2);
@@ -181,10 +214,16 @@ class _ProductFormState extends State<ProductForm> {
           'harga': priceController.text,
           'keterangan': descriptionController.text,
           'status': false,
+          'kategori': dropdownValue == "Air Minum"
+              ? "1"
+              : dropdownValue == "Air Gunung"
+                  ? "2"
+                  : "3",
         },
         files: [
           imageFile != null
-              ? await http.MultipartFile.fromPath('foto_produk', imageFile!.path)
+              ? await http.MultipartFile.fromPath(
+                  'foto_produk', imageFile!.path)
               : http.MultipartFile.fromBytes(
                   'foto_produk',
                   (await http.get(Uri.parse(
@@ -206,9 +245,11 @@ class _ProductFormState extends State<ProductForm> {
           var dynamicData = error.response["data"];
           for (var key in dynamicData.keys) {
             var valueList = dynamicData[key]!;
-            return global.alertWarning(context, valueList["message"].toString());
+            return global.alertWarning(
+                context, valueList["message"].toString());
           }
-          return global.alertWarning(context, "Username / Email & Password salah");
+          return global.alertWarning(
+              context, "Username / Email & Password salah");
         } catch (err2) {
           Navigator.pop(context);
           print(err2);

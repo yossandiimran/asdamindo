@@ -28,7 +28,10 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   }
 
   loadData() async {
-    await pb.collection('produk').getFullList(filter: "id_user = '${preference.getData("id")}'").then((value) {
+    await pb
+        .collection('produk')
+        .getFullList(filter: "id_user = '${preference.getData("id")}'")
+        .then((value) {
       jmlProduk = jsonDecode(value.toString()).length;
       setState(() {});
     });
@@ -93,7 +96,9 @@ class UserCard extends StatelessWidget {
     return <Widget>[
       _buildUserStatsItem('$jmlProduk', 'Produk'),
       _buildUserStatsItem('$jmlTransaksi', 'Transaksi'),
-    ].toRow(mainAxisAlignment: MainAxisAlignment.spaceAround).padding(vertical: 10);
+    ]
+        .toRow(mainAxisAlignment: MainAxisAlignment.spaceAround)
+        .padding(vertical: 10);
   }
 
   Widget _buildUserStatsItem(String value, String text) => <Widget>[
@@ -106,7 +111,8 @@ class UserCard extends StatelessWidget {
     return <Widget>[_buildUserRow(), _buildUserStats()]
         .toColumn(mainAxisAlignment: MainAxisAlignment.spaceAround)
         .padding(horizontal: 20, vertical: 10)
-        .decorated(color: Color(0xff3977ff), borderRadius: BorderRadius.circular(20))
+        .decorated(
+            color: Color(0xff3977ff), borderRadius: BorderRadius.circular(20))
         .elevation(
           5,
           shadowColor: Color(0xff3977ff),
@@ -185,11 +191,21 @@ class Settings extends StatelessWidget {
         description: 'Cek bukti transfer pembelian anggota',
         onTapEvent: "Acc",
       ),
+    if (preference.getData("is_member").toString() == 'false')
+      SettingsItemModel(
+        icon: Icons.dashboard,
+        color: Color.fromARGB(255, 232, 210, 70),
+        title: 'Produk Asdamindo',
+        description: 'Daftar Produk Asdamindo',
+        onTapEvent: "ProdukA",
+      ),
     SettingsItemModel(
       icon: Icons.dashboard,
       color: Color(0xffF468B7),
       title: 'Produk',
-      description: 'Daftar Produk Anda',
+      description: (preference.getData("is_member").toString() == 'true')
+          ? 'Daftar Produk Anda'
+          : 'Daftar Produk Anggota',
       onTapEvent: "Produk",
     ),
     SettingsItemModel(
@@ -229,7 +245,9 @@ class Settings extends StatelessWidget {
 }
 
 class SettingsItem extends StatefulWidget {
-  SettingsItem(this.icon, this.iconBgColor, this.title, this.description, this.onTapEvent, {super.key});
+  SettingsItem(this.icon, this.iconBgColor, this.title, this.description,
+      this.onTapEvent,
+      {super.key});
 
   final IconData icon;
   final Color iconBgColor;
@@ -280,7 +298,15 @@ class _SettingsItemState extends State<SettingsItem> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (ctx) {
-                    return ProductListScreen();
+                    return ProductListScreen(kategori: '-');
+                  }),
+                );
+              }
+              if (onTapEvent == "ProdukA") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (ctx) {
+                    return ProductListScreen(kategori: 'asdamindo');
                   }),
                 );
               }

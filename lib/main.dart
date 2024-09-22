@@ -76,16 +76,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: FadeInUp(
                       duration: Duration(milliseconds: 1600),
                       child: Container(
-                        margin: EdgeInsets.only(top: 0),
-                        child: Center(
-                          child: Text(
-                            "Asdamindo\nE-Commerce",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color.fromRGBO(0, 162, 232, 1),
-                              fontSize: 34,
-                              fontWeight: FontWeight.bold,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          image: DecorationImage(
+                            image: AssetImage(
+                              "assets/images/logo.png",
                             ),
+                            fit: BoxFit.contain,
                           ),
                         ),
                       ),
@@ -148,7 +147,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                       isObsecure = isObsecure ? false : true;
                                     });
                                   },
-                                  icon: Icon(isObsecure ? Icons.visibility : Icons.visibility_off),
+                                  icon: Icon(isObsecure
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
                                 ),
                                 border: InputBorder.none,
                                 hintText: "Password",
@@ -254,7 +255,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> prosesLogin() async {
     global.loadingAlert(context, "Mohon tunggu...", true);
-    await pb.collection('users').authWithPassword(user.text, pass.text).then((value) async {
+    await pb
+        .collection('users')
+        .authWithPassword(user.text, pass.text)
+        .then((value) async {
       var vals = value.toJson();
       await preference.setString("token", vals["token"]);
       for (var key in vals["record"].keys) {
