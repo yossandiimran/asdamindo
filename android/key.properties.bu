@@ -1,0 +1,4 @@
+storePassword=asdamindo
+keyPassword=asdamindo
+keyAlias=key
+storeFile=E:/yoss/Project/Flutter/key/asdamindo.jks
