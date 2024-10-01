@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_brace_in_string_interps
+
 import 'dart:convert';
 
 import 'package:asdamindo/detailProduk.dart';
@@ -69,8 +71,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 Spacer(),
                 Icon(Icons.message, color: defWhite, size: 12),
                 Spacer(),
-                Text("Hubungi Via Whatsapp",
-                    style: global.styleText5(12, defWhite)),
+                Text("Hubungi Via Whatsapp", style: global.styleText5(12, defWhite)),
                 Spacer(),
               ],
             ),
@@ -103,8 +104,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
                             return HomeWidgetKat(title: "Air Minum");
                           }));
                         },
@@ -112,19 +112,18 @@ class _HomeWidgetState extends State<HomeWidget> {
                           margin: EdgeInsets.symmetric(horizontal: 8),
                           width: global.getWidth(context) * 0.35,
                           decoration: global.decCont(defWhite, 10, 10, 10, 10),
+                          padding: EdgeInsets.all(30),
                           child: Column(
                             children: [
                               Icon(Icons.water, color: defBlue),
                               Text("Air Minum"),
                             ],
                           ),
-                          padding: EdgeInsets.all(30),
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
                             return HomeWidgetKat(title: "Air Gunung");
                           }));
                         },
@@ -132,19 +131,37 @@ class _HomeWidgetState extends State<HomeWidget> {
                           margin: EdgeInsets.symmetric(horizontal: 8),
                           width: global.getWidth(context) * 0.35,
                           decoration: global.decCont(defWhite, 10, 10, 10, 10),
+                          padding: EdgeInsets.all(30),
                           child: Column(
                             children: [
                               Icon(Icons.water_drop_rounded, color: defBlue),
                               Text("Air Gunung"),
                             ],
                           ),
-                          padding: EdgeInsets.all(30),
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return HomeWidgetKat(title: "Alat Depot");
+                          }));
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 8),
+                          width: global.getWidth(context) * 0.35,
+                          decoration: global.decCont(defWhite, 10, 10, 10, 10),
+                          padding: EdgeInsets.all(30),
+                          child: Column(
+                            children: [
+                              Icon(Icons.bubble_chart_rounded, color: defBlue),
+                              Text("Alat Depot"),
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
                             return HomeWidgetLegal();
                           }));
                         },
@@ -152,13 +169,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                           margin: EdgeInsets.symmetric(horizontal: 8),
                           width: global.getWidth(context) * 0.35,
                           decoration: global.decCont(defWhite, 10, 10, 10, 10),
+                          padding: EdgeInsets.all(30),
                           child: Column(
                             children: [
                               Icon(Icons.verified_user_rounded, color: defBlue),
                               Text("Legalitas"),
                             ],
                           ),
-                          padding: EdgeInsets.all(30),
                         ),
                       )
                     ],
@@ -172,8 +189,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   children: products.map((element) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
                           return DetailBarang(obj: element);
                         }));
                       },
@@ -206,30 +222,24 @@ class _HomeWidgetState extends State<HomeWidget> {
                                         0,
                                         0),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
                                           element["nama_produk"]!,
-                                          style:
-                                              global.styleText5(12, defBlack1),
+                                          style: global.styleText5(12, defBlack1),
                                           textAlign: TextAlign.start,
                                         ),
                                         Text(
                                           element["owner"]!,
-                                          style:
-                                              global.styleText6(10, defBlack1),
+                                          style: global.styleText6(10, defBlack1),
                                           textAlign: TextAlign.start,
                                         ),
                                         Row(
                                           children: [
                                             Text(
-                                              global.formatRupiah(double.parse(
-                                                  element["harga"]!)),
-                                              style: global.styleText5(
-                                                  11, defOrange),
+                                              global.formatRupiah(double.parse(element["harga"]!)),
+                                              style: global.styleText5(11, defOrange),
                                             ),
                                             Spacer(),
                                             Icon(

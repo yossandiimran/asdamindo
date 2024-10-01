@@ -27,7 +27,7 @@ class _HomeWidgetKatState extends State<HomeWidgetKat> {
         .collection('view_produk_asdamindo')
         .getFullList(
             filter:
-                'nama_produk ~ "${searchKey.text}" && kategori = "${widget.title == 'Air Minum' ? '1' : '2'}" ')
+                'nama_produk ~ "${searchKey.text}" && kategori = "${widget.title == 'Air Minum' ? '1' : widget.title == 'Air Gunung' ? '2' : '4'}" ')
         .then((value) {
       products = jsonDecode(value.toString());
       setState(() {});
@@ -62,9 +62,7 @@ class _HomeWidgetKatState extends State<HomeWidgetKat> {
           automaticallyImplyLeading: false,
           backgroundColor: bgColor,
           centerTitle: true,
-          title: Text(widget.title,
-              style:
-                  global.styleText5(global.getWidth(context) / 20, defWhite)),
+          title: Text(widget.title, style: global.styleText5(global.getWidth(context) / 20, defWhite)),
         ),
         backgroundColor: Colors.blueGrey.shade50,
         body: Container(
@@ -97,8 +95,7 @@ class _HomeWidgetKatState extends State<HomeWidgetKat> {
                   children: products.map((element) {
                     return GestureDetector(
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
                           return DetailBarang(obj: element);
                         }));
                       },
@@ -131,30 +128,24 @@ class _HomeWidgetKatState extends State<HomeWidgetKat> {
                                         0,
                                         0),
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
                                           element["nama_produk"]!,
-                                          style:
-                                              global.styleText5(12, defBlack1),
+                                          style: global.styleText5(12, defBlack1),
                                           textAlign: TextAlign.start,
                                         ),
                                         Text(
                                           element["owner"]!,
-                                          style:
-                                              global.styleText6(10, defBlack1),
+                                          style: global.styleText6(10, defBlack1),
                                           textAlign: TextAlign.start,
                                         ),
                                         Row(
                                           children: [
                                             Text(
-                                              global.formatRupiah(double.parse(
-                                                  element["harga"]!)),
-                                              style: global.styleText5(
-                                                  11, defOrange),
+                                              global.formatRupiah(double.parse(element["harga"]!)),
+                                              style: global.styleText5(11, defOrange),
                                             ),
                                             Spacer(),
                                             Icon(

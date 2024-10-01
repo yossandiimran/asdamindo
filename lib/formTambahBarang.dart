@@ -42,7 +42,9 @@ class _ProductFormState extends State<ProductForm> {
           ? "Air Minum"
           : product["kategori"] == "2"
               ? "Air Gunung"
-              : "Lainnya";
+              : product["kategori"] == "4"
+                  ? "Alat Depot"
+                  : "Lainnya";
     }
   }
 
@@ -104,7 +106,7 @@ class _ProductFormState extends State<ProductForm> {
                   labelText: 'Kategori',
                   border: UnderlineInputBorder(),
                 ),
-                items: <String>['Air Minum', 'Air Gunung', 'Lainnya']
+                items: <String>['Air Minum', 'Air Gunung', 'Lainnya', 'Alat Depot']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
@@ -178,7 +180,9 @@ class _ProductFormState extends State<ProductForm> {
               ? "1"
               : dropdownValue == "Air Gunung"
                   ? "2"
-                  : "3",
+                  : dropdownValue == "Alat Depot"
+                      ? "4"
+                      : "3",
           'status': false,
         },
         files: [
@@ -196,11 +200,9 @@ class _ProductFormState extends State<ProductForm> {
           var dynamicData = error.response["data"];
           for (var key in dynamicData.keys) {
             var valueList = dynamicData[key]!;
-            return global.alertWarning(
-                context, valueList["message"].toString());
+            return global.alertWarning(context, valueList["message"].toString());
           }
-          return global.alertWarning(
-              context, "Username / Email & Password salah");
+          return global.alertWarning(context, "Username / Email & Password salah");
         } catch (err2) {
           Navigator.pop(context);
           print(err2);
@@ -218,12 +220,13 @@ class _ProductFormState extends State<ProductForm> {
               ? "1"
               : dropdownValue == "Air Gunung"
                   ? "2"
-                  : "3",
+                  : dropdownValue == "Alat Depot"
+                      ? "4"
+                      : "3",
         },
         files: [
           imageFile != null
-              ? await http.MultipartFile.fromPath(
-                  'foto_produk', imageFile!.path)
+              ? await http.MultipartFile.fromPath('foto_produk', imageFile!.path)
               : http.MultipartFile.fromBytes(
                   'foto_produk',
                   (await http.get(Uri.parse(
@@ -245,11 +248,9 @@ class _ProductFormState extends State<ProductForm> {
           var dynamicData = error.response["data"];
           for (var key in dynamicData.keys) {
             var valueList = dynamicData[key]!;
-            return global.alertWarning(
-                context, valueList["message"].toString());
+            return global.alertWarning(context, valueList["message"].toString());
           }
-          return global.alertWarning(
-              context, "Username / Email & Password salah");
+          return global.alertWarning(context, "Username / Email & Password salah");
         } catch (err2) {
           Navigator.pop(context);
           print(err2);
