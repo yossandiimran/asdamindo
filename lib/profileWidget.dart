@@ -28,10 +28,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   }
 
   loadData() async {
-    await pb
-        .collection('produk')
-        .getFullList(filter: "id_user = '${preference.getData("id")}'")
-        .then((value) {
+    await pb.collection('produk').getFullList(filter: "id_user = '${preference.getData("id")}'").then((value) {
       jmlProduk = jsonDecode(value.toString()).length;
       setState(() {});
     });
@@ -96,9 +93,7 @@ class UserCard extends StatelessWidget {
     return <Widget>[
       _buildUserStatsItem('$jmlProduk', 'Produk'),
       _buildUserStatsItem('$jmlTransaksi', 'Transaksi'),
-    ]
-        .toRow(mainAxisAlignment: MainAxisAlignment.spaceAround)
-        .padding(vertical: 10);
+    ].toRow(mainAxisAlignment: MainAxisAlignment.spaceAround).padding(vertical: 10);
   }
 
   Widget _buildUserStatsItem(String value, String text) => <Widget>[
@@ -111,8 +106,7 @@ class UserCard extends StatelessWidget {
     return <Widget>[_buildUserRow(), _buildUserStats()]
         .toColumn(mainAxisAlignment: MainAxisAlignment.spaceAround)
         .padding(horizontal: 20, vertical: 10)
-        .decorated(
-            color: Color(0xff3977ff), borderRadius: BorderRadius.circular(20))
+        .decorated(color: Color(0xff3977ff), borderRadius: BorderRadius.circular(20))
         .elevation(
           5,
           shadowColor: Color(0xff3977ff),
@@ -152,16 +146,16 @@ class ActionsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) => <Widget>[
         // _buildActionItem('Saldo', Icons.attach_money),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return ListTransaksi();
-            }));
-          },
-          child: _buildActionItem('Transaksi', Icons.card_giftcard),
-        ),
-        _buildActionItem('Pesan', Icons.message),
-        _buildActionItem('Notifikasi', Icons.notifications),
+        // GestureDetector(
+        //   onTap: () {
+        //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+        //       return ListTransaksi();
+        //     }));
+        //   },
+        //   child: _buildActionItem('Transaksi', Icons.card_giftcard),
+        // ),
+        // _buildActionItem('Pesan', Icons.message),
+        // _buildActionItem('Notifikasi', Icons.notifications),
       ].toRow(mainAxisAlignment: MainAxisAlignment.spaceAround);
 }
 
@@ -183,6 +177,13 @@ class SettingsItemModel {
 class Settings extends StatelessWidget {
   Settings({super.key});
   List<SettingsItemModel> settingsItems = [
+    SettingsItemModel(
+      icon: Icons.card_giftcard,
+      color: Color.fromARGB(255, 117, 208, 38),
+      title: 'Transaksi',
+      description: "List Transaksi",
+      onTapEvent: "Trx",
+    ),
     if (preference.getData("is_member").toString() == 'false')
       SettingsItemModel(
         icon: Icons.check_circle_outlined,
@@ -203,9 +204,8 @@ class Settings extends StatelessWidget {
       icon: Icons.dashboard,
       color: Color(0xffF468B7),
       title: 'Produk',
-      description: (preference.getData("is_member").toString() == 'true')
-          ? 'Daftar Produk Anda'
-          : 'Daftar Produk Anggota',
+      description:
+          (preference.getData("is_member").toString() == 'true') ? 'Daftar Produk Anda' : 'Daftar Produk Anggota',
       onTapEvent: "Produk",
     ),
     SettingsItemModel(
@@ -245,9 +245,7 @@ class Settings extends StatelessWidget {
 }
 
 class SettingsItem extends StatefulWidget {
-  SettingsItem(this.icon, this.iconBgColor, this.title, this.description,
-      this.onTapEvent,
-      {super.key});
+  SettingsItem(this.icon, this.iconBgColor, this.title, this.description, this.onTapEvent, {super.key});
 
   final IconData icon;
   final Color iconBgColor;
@@ -285,6 +283,11 @@ class _SettingsItemState extends State<SettingsItem> {
             onTapChange: (tapStatus) => setState(() => pressed = tapStatus),
             onTapDown: (details) => print('tapDown'),
             onTap: () {
+              if (onTapEvent == 'Trx') {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ListTransaksi();
+                }));
+              }
               if (onTapEvent == "Acc") {
                 Navigator.push(
                   context,
